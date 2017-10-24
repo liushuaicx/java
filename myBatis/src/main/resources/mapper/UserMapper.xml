@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kaishengit.mapper.UserMapper">
+
+    <select id="findAll" resultType="com.kaishengit.entity.User">
+        SELECT
+        t_user.id,
+        user_name,
+        user_password,
+        sort_id,
+        sort_name as 'Sort.sortName'
+        FROM
+        t_user,
+        t_sort
+        WHERE
+        t_user.sort_id = t_sort.id;
+    </select>
+
+</mapper>

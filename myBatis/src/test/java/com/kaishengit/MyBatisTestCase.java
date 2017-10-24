@@ -26,7 +26,7 @@ public class MyBatisTestCase {
 
         Student student = new Student("jack","焦作");
 
-        sqlSession.insert("StudentMapper.save",student);
+        sqlSession.insert("com.kaishengit.mapper.StudentMapper.save",student);
 
         sqlSession.commit();
 
@@ -36,7 +36,7 @@ public class MyBatisTestCase {
     public void findAll() {
 
         SqlSession sqlSession = MyBatisUtil.getSqlSession();
-        List<Student> stuList = sqlSession.selectList("StudentMapper.findAll");
+        List<Student> stuList = sqlSession.selectList("com.kaishengit.mapper.StudentMapper.findAll");
 
         for(Student student : stuList) {
             System.out.println(student);
@@ -47,7 +47,7 @@ public class MyBatisTestCase {
     public void delete() {
 
         SqlSession sqlSession = MyBatisUtil.getSqlSession();
-        sqlSession.delete("StudentMapper.delete",1);
+        sqlSession.delete("com.kaishengit.mapper.StudentMapper.delete",1);
         sqlSession.commit();
         sqlSession.close();
     }
@@ -56,12 +56,12 @@ public class MyBatisTestCase {
 
         SqlSession sqlSession = MyBatisUtil.getSqlSession();
 
-        Student student =sqlSession.selectOne("StudentMapper.findById",2);
+        Student student =sqlSession.selectOne("com.kaishengit.mapper.StudentMapper.findById",2);
 
         student.setStuName("rose");
         student.setStuAddress("郑州");
 
-        sqlSession.update("StudentMapper.update",student);
+        sqlSession.update("com.kaishengit.mapper.StudentMapper.update",student);
 
         sqlSession.commit();
 
@@ -70,7 +70,7 @@ public class MyBatisTestCase {
     @Test
     public void findById() {
         SqlSession sqlSession = MyBatisUtil.getSqlSession();
-        Student student =sqlSession.selectOne("StudentMapper.findById",2);
+        Student student =sqlSession.selectOne("com.kaishengit.mapper.StudentMapper.findById",2);
         System.out.println(student);
         sqlSession.close();
     }
