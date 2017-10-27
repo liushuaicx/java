@@ -19,11 +19,8 @@
         </environment>
     </environments>
     <mappers>
-        <!--<mapper resource="mapper/StudentMapper.xml"/>
-        <mapper resource="mapper/UserMapper.xml"/>-->
-        <mapper class="com.kaishengit.mapper.UserMapper"/>
-        <mapper class="com.kaishengit.mapper.StudentMapper"/>
-        <mapper class="com.kaishengit.mapper.SortMapper"/>
+
+
     </mappers>
 
 

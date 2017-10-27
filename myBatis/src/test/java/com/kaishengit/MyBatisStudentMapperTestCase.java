@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import java.util.List;
 
+
 public class MyBatisStudentMapperTestCase {
 
     @Test
@@ -24,6 +25,19 @@ public class MyBatisStudentMapperTestCase {
             System.out.println(student);
         }
         sqlSession.close();
+//        ===================================
+        SqlSession sqlSession2 = MyBatisUtil.getSqlSession();
+        //根据接口的classpath动态创建接口的实现类
+        StudentMapper studentMapper2 = sqlSession2.getMapper(StudentMapper.class);
+        List<Student> studentList2 = studentMapper2.findAll();
+
+        for (Student student : studentList2) {
+            System.out.println(student);
+        }
+        sqlSession.close();
+
+
+
     }
     private SqlSession sqlSession;
     private StudentMapper studentMapper;
@@ -54,22 +68,23 @@ public class MyBatisStudentMapperTestCase {
     @Test
     public void findById() {
 
-        Student student = studentMapper.findById(3);
+        Student student = studentMapper.findById(6);
         System.out.println(student);
     }
 
     @Test
     public void delete() {
 
-        studentMapper.delete(3);
+        studentMapper.delete(2);
         sqlSession.commit();
     }
 
     @Test
     public void update() {
 
-        Student student = studentMapper.findById(2);
-        student.setStuAddress("花果山");
+        Student student = studentMapper.findById(6);
+        student.setStuName("陆露");
+        student.setStuAddress("上海");
 
         studentMapper.update(student);
         sqlSession.commit();

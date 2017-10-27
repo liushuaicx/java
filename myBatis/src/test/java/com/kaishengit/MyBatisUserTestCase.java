@@ -12,10 +12,10 @@ import java.util.List;
 
 public class MyBatisUserTestCase {
 
-    private SqlSession sqlSession;
-    private UserMapper userMapper;
+   /* private SqlSession sqlSession;
+    private UserMapper userMapper;*/
 
-    @Before
+/*    @Before
     public void init() {
         sqlSession = MyBatisUtil.getSqlSession();
         userMapper = sqlSession.getMapper(UserMapper.class);
@@ -23,15 +23,26 @@ public class MyBatisUserTestCase {
     @After
     public void close() {
         sqlSession.close();
-    }
+    }*/
 
     @Test
     public void findAll() {
 
-
+        SqlSession sqlSession = MyBatisUtil.getSqlSession();
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
         List<User> userList = userMapper.findAll();
 
         for (User user : userList) {
+            System.out.println(user);
+        }
+//        ------------------------
+
+        SqlSession sqlSession2 = MyBatisUtil.getSqlSession();
+        UserMapper userMapper2 = sqlSession.getMapper(UserMapper.class);
+
+        List<User> userList2 = userMapper2.findAll();
+
+        for (User user : userList2) {
 
             System.out.println(user);
         }
