@@ -40,4 +40,22 @@ public class User {
     public void setSortId(Integer sortId) {
         this.sortId = sortId;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", userPassword='" + userPassword + '\'' +
+                ", sortId=" + sortId +
+                '}';
+    }
+
+    public User(String userName, String userPassword, Integer sortId) {
+        this.userName = userName;
+        this.userPassword = userPassword;
+        this.sortId = sortId;
+    }
+
+    public User() {}
 }

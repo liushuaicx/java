@@ -6,6 +6,9 @@
     <settings>
         <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor"></plugin>
+    </plugins>
     <!--配置数据库环境-->
     <environments default="dev">
         <environment id="dev">
@@ -19,8 +22,7 @@
         </environment>
     </environments>
     <mappers>
-
-
+        <mapper resource="mapper/UserMapper.xml"/>
     </mappers>
 
 
