@@ -1,12 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-       http://www.springframework.org/schema/beans/spring-beans.xsd">
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd
+       ">
 
+    <bean id="userService" class="com.kaishengit.service.impl.UserServiceImpl"/>
+    <!--配置通知类-->
+    <bean id="aopAspect" class="com.kaishengit.aop.AopAspect"/>
+    <!--配置Aop-->
+    <aop:config>
+        <aop:aspect ref="aopAspect">
+            <!--制定目标对象范围,切入点表达式-->
+            <aop:pointcut id="pointcut" expression="execution(* com.kaishengit.service.impl..*.*(..))"/>
+            <aop:before method="before" pointcut-ref="pointcut"/>
+            <aop:after-returning method="returning" pointcut-ref="pointcut"/>
+            <aop:after-throwing method="throwing" pointcut-ref="pointcut"/>
+            <aop:after method="after" pointcut-ref="pointcut"/>
+            <aop:around method="around" pointcut-ref="pointcut"/>
+        </aop:aspect>
+    </aop:config>
+
+
+
+
+
+<!--
     <bean id="userDao" class="com.kaishengit.dao.UserDao"/>
-                                                                                <!--自动注入-->
-    <bean id="userService" class="com.kaishengit.service.impl.UserServiceImpl" autowire="byType"/>
+                                                                                &lt;!&ndash;自动注入&ndash;&gt;
+    <bean id="userService" class="com.kaishengit.service.impl.UserServiceImpl" autowire="byType"/>-->
         <!--<constructor-arg name="userDao" ref="userDao"/>-->
         <!--<constructor-arg index="0" ref="userDao"/>-->
         <!--<constructor-arg type="com.kaishengit.dao.UserDao" ref="userDao"/>-->

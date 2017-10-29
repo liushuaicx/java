@@ -10,16 +10,42 @@
     <packaging>jar</packaging>
 
     <properties>
-        <context-vesion>4.3.12.RELEASE</context-vesion>
+        <spring-version>4.3.12.RELEASE</spring-version>
         <junit-version>4.12</junit-version>
         <slf4j-version>1.7.22</slf4j-version>
+        <cglib-version>3.2.4</cglib-version>
     </properties>
 
     <dependencies>
+        <!--SpringContext-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>${context-vesion}</version>
+            <version>${spring-version}</version>
+        </dependency>
+        <!--SpringAOP-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>${spring-version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-aspects -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+            <version>${spring-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.22</version>
+        </dependency>
+
+        <!--CGlib-->
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>${cglib-version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
