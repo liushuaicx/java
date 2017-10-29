@@ -15,7 +15,22 @@ public class UserServiceImpl implements UserService {
 
     private UserDao userDao;
 
-    private int id;
+    public UserServiceImpl () {};
+
+    public UserServiceImpl (UserDao userDao) {
+
+        this.userDao = userDao;
+    }
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
+    @Override
+    public void save() {
+        System.out.println("save........");
+    }
+    /* private int id;
     private String name;
     private List<String> nameList;
     private Set<UserDao> userDaoSet;
@@ -52,14 +67,14 @@ public class UserServiceImpl implements UserService {
 
     public void setUserDao1(UserDao userDao) {
         this.userDao = userDao;
-    }
+    }*/
 
 
-    @Override
+    /*@Override
     public void save() {
 
         userDao.Hello();
 
-    }
+    }*/
 
 }

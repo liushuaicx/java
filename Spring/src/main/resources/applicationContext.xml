@@ -4,36 +4,45 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <bean id="userDao" class="com.kaishengit.dao.UserDao"/>
+                                                                                <!--自动注入-->
+    <bean id="userService" class="com.kaishengit.service.impl.UserServiceImpl" autowire="byType"/>
+        <!--<constructor-arg name="userDao" ref="userDao"/>-->
+        <!--<constructor-arg index="0" ref="userDao"/>-->
+        <!--<constructor-arg type="com.kaishengit.dao.UserDao" ref="userDao"/>-->
 
-    <bean id="userDao2" class="com.kaishengit.dao.UserDao" lazy-init="true"/>
-    <!--<alias name="userDao" alias="myUserDao"/>-->
 
-    <bean id="userService" class="com.kaishengit.service.impl.UserServiceImpl">
-        <property name="userDao1" ref="userDao2"/>
-        <property name="id" value="111"/>
-        <property name="name" value="jack"/>
-        <property name="nameList">
-            <list>
-                <value>aa</value>
-                <value>bb</value>
-            </list>
-        </property>
-        <property name="userDaoSet">
-            <set>
-                <ref bean="userDao2"/>
-            </set>
-        </property>
-        <property name="userDaoMap">
-            <map>
-                <entry key="key" value-ref="userDao2"/>
-            </map>
-        </property>
-        <property name="properties">
-            <props>
-                <prop key="key">value</prop>
-                <prop key="key2">value2</prop>
-            </props>
-        </property>
-    </bean>
+
+
+    <!--<bean id="userDao2" class="com.kaishengit.dao.UserDao" lazy-init="true"/>-->
+    <!--&lt;!&ndash;<alias name="userDao" alias="myUserDao"/>&ndash;&gt;-->
+
+    <!--<bean id="userService" class="com.kaishengit.service.impl.UserServiceImpl">-->
+        <!--<property name="userDao1" ref="userDao2"/>-->
+        <!--<property name="id" value="111"/>-->
+        <!--<property name="name" value="jack"/>-->
+        <!--<property name="nameList">-->
+            <!--<list>-->
+                <!--<value>aa</value>-->
+                <!--<value>bb</value>-->
+            <!--</list>-->
+        <!--</property>-->
+        <!--<property name="userDaoSet">-->
+            <!--<set>-->
+                <!--<ref bean="userDao2"/>-->
+            <!--</set>-->
+        <!--</property>-->
+        <!--<property name="userDaoMap">-->
+            <!--<map>-->
+                <!--<entry key="key" value-ref="userDao2"/>-->
+            <!--</map>-->
+        <!--</property>-->
+        <!--<property name="properties">-->
+            <!--<props>-->
+                <!--<prop key="key">value</prop>-->
+                <!--<prop key="key2">value2</prop>-->
+            <!--</props>-->
+        <!--</property>-->
+    <!--</bean>-->
 
 </beans>
