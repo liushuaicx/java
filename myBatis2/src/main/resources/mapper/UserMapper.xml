@@ -99,7 +99,7 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.kaishengit.entity.User">
-    insert into t_user (id, user_name, user_password, 
+    insert into t_user (id, user_name, user_password,
       sort_id)
     values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userPassword,jdbcType=VARCHAR}, 
       #{sortId,jdbcType=INTEGER})

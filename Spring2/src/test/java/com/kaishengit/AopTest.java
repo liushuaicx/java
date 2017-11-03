@@ -1,5 +1,6 @@
 package com.kaishengit;
 
+import com.kaishengit.entity.User;
 import com.kaishengit.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,7 +15,10 @@ public class AopTest {
     private UserService userService;
 
     @Test
-    public void Test() {
-        userService.save();
+    public void Test() throws Exception {
+        User user = new User();
+        user.setName("tom");
+        user.setAddress("UK");
+        userService.save(user);
     }
 }
