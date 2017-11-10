@@ -1,0 +1,11 @@
+data: {
+                simpleData: {
+                    enable: true
+                }
+            },
+            callback:{
+                onClick:function(event,treeId,treeNode,clickFlag){
+
+                    alert(treeNode.id +"==>"+ treeNode.name +"==>>"+ treeNode.pId);
+                }
+            }
