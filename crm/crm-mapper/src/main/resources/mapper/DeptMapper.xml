@@ -103,7 +103,7 @@
     values (#{id,jdbcType=INTEGER}, #{deptName,jdbcType=VARCHAR}, #{pId,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.kaishengit.crm.entity.Dept">
+  <insert id="insertSelective" parameterType="com.kaishengit.crm.entity.Dept" useGeneratedKeys="true" keyProperty="id">
     insert into dept
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -134,7 +134,17 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+    <select id="findDeptByUserId" resultType="com.kaishengit.crm.entity.Dept">
+      SELECT
+          *
+      FROM
+          dept
+      INNER JOIN user_dept ON dept.id = user_dept.dept_id
+      INNER JOIN USER ON USER .id = user_dept.user_id
+      WHERE
+          USER .id = #{userId}
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
     update dept
     <set>
       <if test="record.id != null">

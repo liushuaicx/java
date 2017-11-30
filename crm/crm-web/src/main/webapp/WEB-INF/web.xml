@@ -21,6 +21,21 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
     
+    <!--配置shiro过滤器-->
+    <filter>
+        <filter-name>shiroFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+        <init-param>
+            <param-name>targetFilterLifecycle</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>shiroFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    
+    
     <!--springMVC中央控制器-->
     <servlet>
         <servlet-name>mvc</servlet-name>
@@ -31,6 +46,7 @@
         <servlet-name>mvc</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
+
     <!--在web容器启动时,创建spring容器-->
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
@@ -39,5 +55,19 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>classpath*:applicationContext*.xml</param-value>
     </context-param>
+
+
+    <!--<filter>
+        <filter-name>LoginFilter</filter-name>
+        <filter-class>com.kaishengit.crm.controller.filter.LoginFilter</filter-class>
+        <init-param>
+            <param-name>validateUri</param-name>
+            <param-value>/user,/customer</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/user/*,/customer/*</url-pattern>
+    </filter-mapping>-->
 
 </web-app>

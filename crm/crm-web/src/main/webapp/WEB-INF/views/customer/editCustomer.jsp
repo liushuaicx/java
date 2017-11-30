@@ -5,22 +5,22 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>凯盛软件CRM-首页</title>
+    <title>凯盛软件CRM-修改客户</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <%@include file="include/css.jsp"%>
+    <%@include file="../include/css.jsp"%>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <!-- Site wrapper -->
 <div class="wrapper">
 
     <!-- 顶部导航栏部分 -->
-    <%@include file="include/header.jsp"%>
+    <%@include file="../include/header.jsp"%>
 
     <!-- =============================================== -->
 
     <!-- 左侧菜单栏 -->
-    <%@include file="include/sider.jsp"%>
+    <%@include file="../include/sider.jsp"%>
 
     <!-- =============================================== -->
 
@@ -32,35 +32,48 @@
             <!-- Default box -->
             <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title">新增客户</h3>
+                    <h3 class="box-title">修改客户</h3>
                     <div class="box-tools pull-right">
-                        <button class="btn btn-primary btn-sm"><i class="fa fa-arrow-left"></i><a href="/customer/my">返回列表</a> </button>
+                        <a href="/customer/my" class="btn btn-primary btn-sm"><i class="fa fa-arrow-left"></i>返回列表</a>
                     </div>
                 </div>
                 <div class="box-body">
                     <form method="post">
+
+                        <input class="hidden" name="userId" value="${customer.userId}">
                         <div class="form-group">
                             <label>姓名</label>
-                            <input type="text" name="custName" class="form-control">
+                            <input type="text" name="custName" value="${customer.custName}" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>性别</label>
+                            <div>
+                                <label class="radio-inline">
+                                    <input type="radio" name="sex" value="男" ${customer.sex == '男'? 'checked' :''}> 先生
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="sex" value="女" ${customer.sex == '女'? 'checked' :''}> 女士
+                                </label>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>职位</label>
-                            <input type="text" name="jobTitle" class="form-control">
+                            <input type="text" name="jobTitle" value="${customer.jobTitle}" class="form-control">
                         </div>
                         <div class="form-group">
                             <label>联系方式</label>
-                            <input type="text" name="mobile" class="form-control">
+                            <input type="text" name="mobile" value="${customer.mobile}" class="form-control">
                         </div>
                         <div class="form-group">
                             <label>地址</label>
-                            <input type="text" name="address" class="form-control">
+                            <input type="text" name="address" value="${customer.address}" class="form-control">
                         </div>
                         <div class="form-group">
                             <label>所属行业</label>
                             <select class="form-control" name="trade">
                                 <option value=""></option>
-                                <c:forEach items="${customerList}" var="customer">
-                                    <option value="${customer.trade}">${customer.trade}</option>
+                                <c:forEach items="${tradeList}" var="trade">
+                                    <option value="${trade}" ${customer.trade == trade ? 'selected':''}>${trade}</option>
                                 </c:forEach>
                             </select>
                         </div>
@@ -68,28 +81,24 @@
                             <label>客户来源</label>
                             <select  class="form-control" name="source">
                                 <option value=""></option>
-                                <option value="DM广告">DM广告</option>
-                                <option value="电视媒体">电视媒体</option>
-                                <option value="网络媒体">网络媒体</option>
-                                <option value="顾客推荐">顾客推荐</option>
-                                <option value="主动上门">主动上门</option>
-                                <option value="其他">其他</option>
+                                <c:forEach items="${sourceList}" var="source">
+                                    <option value="${source}" ${customer.source == source ? 'selected':''}>${source}</option>
+                                </c:forEach>
                             </select>
                         </div>
                         <div class="form-group">
                             <label>级别</label>
                             <select name="level" class="form-control">
-                                <option value=""></option>
-                                <option value="★">★</option>
-                                <option value="★★">★★</option>
-                                <option value="★★★">★★★</option>
-                                <option value="★★★★">★★★★</option>
-                                <option value="★★★★★">★★★★★</option>
+                                <option ${customer.level == '★'? 'selected' : ''} value="★">★</option>
+                                <option ${customer.level == '★★'? 'selected' : ''} value="★★">★★</option>
+                                <option ${customer.level == '★★★'? 'selected' : ''} value="★★★">★★★</option>
+                                <option ${customer.level == '★★★★'? 'selected' : ''} value="★★★★">★★★★</option>
+                                <option ${customer.level == '★★★★★'? 'selected' : ''} value="★★★★★">★★★★★</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label>备注</label>
-                            <input type="text" name="mark" class="form-control">
+                            <input type="text" name="mark" value="${customer.mark}" class="form-control">
                         </div>
                         <div class="box-footer">
                             <button class="btn btn-primary">保存</button>
@@ -105,11 +114,11 @@
     </div>
     <!-- /.content-wrapper -->
 
-    <%@include file="include/footer.jsp"%>
+    <%@include file="../include/footer.jsp"%>
 
 </div>
 <!-- ./wrapper -->
 
-<%@include file="include/js.jsp"%>
+<%@include file="../include/js.jsp"%>
 </body>
 </html>

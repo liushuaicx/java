@@ -227,7 +227,29 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+  <select id="findCustomerCountByLever" resultType="java.util.Map">
+    SELECT
+        count(*) AS 'count',
+        LEVEL
+    FROM
+        customer
+    WHERE
+        user_id = #{userId}
+    GROUP BY LEVEL;
+  </select>
+    <select id="findCustomerCountByCreateTime" resultType="java.util.Map">
+      SELECT
+          count(*) AS 'count',
+          MONTH(create_time) AS 'month'
+      FROM
+          `customer`
+      WHERE
+          user_id = #{id}
+      GROUP BY
+          create_time
+    </select>
+
+    <update id="updateByExampleSelective" parameterType="map">
     update customer
     <set>
       <if test="record.id != null">

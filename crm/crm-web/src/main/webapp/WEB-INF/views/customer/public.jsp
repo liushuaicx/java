@@ -1,14 +1,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>凯盛软件CRM-我的客户</title>
+    <title>凯盛软件CRM-公海</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <%@include file="include/css.jsp"%>
+    <%@include file="../include/css.jsp"%>
     <style>
         .name-avatar {
             display: inline-block;
@@ -44,12 +45,14 @@
 <div class="wrapper">
 
     <!-- 顶部导航栏部分 -->
-    <%@include file="include/header.jsp"%>
+    <%@include file="../include/header.jsp"%>
 
     <!-- =============================================== -->
 
     <!-- 左侧菜单栏 -->
-    <%@include file="include/sider.jsp"%>
+    <jsp:include page="../include/sider.jsp">
+        <jsp:param name="menu" value="customer_public"/>
+    </jsp:include>
 
     <!-- =============================================== -->
 
@@ -61,9 +64,9 @@
             <!-- Default box -->
             <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title">我的客户</h3>
+                    <h3 class="box-title">公海客户</h3>
                     <div class="box-tools pull-right">
-                        <button class="btn btn-success btn-sm"><i class="fa fa-plus"></i><a href="/customer/add">新增客户</a> </button>
+                        <a href="/customer/add" class="btn btn-success btn-sm"><i class="fa fa-plus"></i>新增客户</a>
                         <button class="btn btn-primary btn-sm"><i class="fa fa-file-excel-o"></i> 导出Excel</button>
                     </div>
                 </div>
@@ -78,14 +81,14 @@
                             <th>级别</th>
                             <th>联系方式</th>
                         </tr>
-                        <c:forEach items="${customerPageInfo.list}" var="customer">
-                            <tr>
-                                <td><span class="name-avatar">${customer.custName.subSequence(0,1)}</span></td>
-                                <td><a href="/customer/detail?id=${customer.id}">${customer.custName}</a></td>
-                                <td>${customer.jobTitle}</td>
-                                <td>${customer.lastContractTime}</td>
-                                <td class="star">${customer.level}</td>
-                                <td><i class="fa fa-phone"></i> ${customer.mobile} <br></td>
+                        <c:forEach items="${pageInfo.list}" var="pageInfo">
+                            <tr class="detail" rel="${pageInfo.id}">
+                                <td><span class="name-avatar">${pageInfo.custName.subSequence(0,1)}</span></td>
+                                <td>${pageInfo.custName}</td>
+                                <td>${pageInfo.jobTitle}</td>
+                                <td><fmt:formatDate value="${pageInfo.lastContractTime}"/></td>
+                                <td class="star">${pageInfo.level}</td>
+                                <td><i class="fa fa-phone"></i> ${pageInfo.mobile} <br></td>
                             </tr>
                         </c:forEach>
                         </tbody>
@@ -111,6 +114,19 @@
 </div>
 <!-- ./wrapper -->
 
-<%@include file="include/js.jsp"%>
+<%@include file="../include/js.jsp"%>
+<script>
+
+    $(function () {
+
+        $(".detail").click(function () {
+
+            var id = $(this).attr("rel");
+            window.location.href = "/customer/detail/" + id;
+        })
+    });
+
+
+</script>
 </body>
 </html>

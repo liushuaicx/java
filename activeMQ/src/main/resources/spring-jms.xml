@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jms="http://www.springframework.org/schema/jms"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd">
+
+    <!--开启自动扫描-->
+    <context:component-scan base-package="com.kaishengit"/>
+
+    <!--创建 activeMQ connectionFactory-->
+    <bean id="activeMQConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="tcp://localhost:61616"/>
+    </bean>
+
+    <!--创建Spring适配的连接工厂-->
+    <bean id="singleConnectionFactory" class="org.springframework.jms.connection.SingleConnectionFactory">
+        <property name="targetConnectionFactory" ref="activeMQConnectionFactory"/>
+    </bean>
+
+    <!--配置jmsTemplate-->
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <!--配置连接工厂-->
+        <property name="connectionFactory" ref="singleConnectionFactory"/>
+        <!--配置目的地名称,选配,如果不配置可以在发送时制定-->
+        <property name="defaultDestinationName" value="spring-QueueTest"/>
+    </bean>
+
+    <!--开启基于注解的接收模式-->
+    <bean id="jmsListenerContainerFactory" class="org.springframework.jms.config.DefaultJmsListenerContainerFactory">
+
+        <property name="connectionFactory" ref="singleConnectionFactory"/>
+        <!--线程池的控制 concurrency:并发的意思-->
+        <property name="concurrency" value="5-15"/>
+    </bean>
+
+    <bean id="topicJmsListenerContainerFactory" class="org.springframework.jms.config.DefaultJmsListenerContainerFactory">
+        <property name="connectionFactory" ref="singleConnectionFactory"/>
+        <!--监听pub/sub-->
+        <property name="pubSubDomain" value="true"/>
+    </bean>
+    <jms:annotation-driven container-factory="jmsListenerContainerFactory"/>
+
+
+</beans>

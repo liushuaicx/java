@@ -1,0 +1,23 @@
+手动签收 recover
+-----------------------------
+springMVC
+spring 4.3
+mybatis 3
+Git 版本控制
+idea eclipse 开发工具
+maven
+本地 fastDfs cloud 存储
+微信企业号
+JMS activeMQ
+定时任务 Quartz
+guava 本地缓存
+FsatJSON
+POI
+--------------------
+bootStrap
+jquery
+validate
+echarts
+ztree
+layer
+datatables

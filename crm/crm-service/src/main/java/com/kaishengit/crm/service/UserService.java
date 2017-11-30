@@ -3,6 +3,7 @@ package com.kaishengit.crm.service;
 import com.github.pagehelper.PageInfo;
 import com.kaishengit.crm.entity.Customer;
 import com.kaishengit.crm.entity.Dept;
+import com.kaishengit.crm.entity.SaleChanceRecord;
 import com.kaishengit.crm.entity.User;
 import com.kaishengit.crm.exception.AuthenticationException;
 import com.kaishengit.crm.exception.ServiceException;
@@ -68,30 +69,29 @@ public interface UserService {
     void deleteUserById(Integer id);
 
     /**
-     * 根据userId查询客户,并分页
-     * @param userId
+     * 查找所有账户
      * @return
      */
-    PageInfo<Customer> findAllCustomer(Integer pageNO , Integer userId);
+    List<User> findAllUser();
 
     /**
-     *查询所有客户
-     * @param userId
-     * @return
-     */
-    List<Customer> findAll(Integer userId);
-
-    /**
-     * 添加客户,如果已经存在抛出异常
-     * @param customer
-     * @throws ServiceException
-     */
-    void addCustomer(Integer userId,Customer customer) throws ServiceException;
-
-    /**
-     * 根据id查询Customer对象
+     * 查找客户对应的销售进度
      * @param id
      * @return
      */
-    Customer findCustomerDetailById(Integer id);
+    List<SaleChanceRecord> findSaleChanceRecordList(Integer id);
+
+    /**
+     *验证登录
+     * @param mobile
+     * @return
+     */
+    User findByMobile(String mobile);
+
+    /**
+     * 查询账户对应的部门列表
+     * @param id
+     * @return
+     */
+    List<Dept> findDeptByUserId(Integer id);
 }

@@ -1,6 +1,7 @@
 package com.kaishengit.crm.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import com.kaishengit.crm.entity.Customer;
 import com.kaishengit.crm.example.CustomerExample;
@@ -29,4 +30,8 @@ public interface CustomerMapper {
     int updateByPrimaryKeySelective(Customer record);
 
     int updateByPrimaryKey(Customer record);
+
+    List<Map<String,Object>> findCustomerCountByLever(Integer userId);
+
+    List<Map<String,Object>> findCustomerCountByCreateTime(Integer id);
 }

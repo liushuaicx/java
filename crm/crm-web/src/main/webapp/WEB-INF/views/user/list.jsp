@@ -299,20 +299,18 @@
                 dataFilter:ajaxDataFilter
             },
             edit: {
-                enable: true
+                enable: true,
+                showRenameBtn: false,
+                showRemoveBtn: true,
+                removeTitle: "删除节点"
             },
             callback:{
                 onClick:function(event,treeId,treeNode,clickFlag){
                     //alert(treeNode.id + treeNode.deptName + treeNode.pId);
                     $("#deptId").val(treeNode.id);
                     dataTable.ajax.reload();
-                },
-                beforeRemove: {
-
-                },
-                onRemove: {
-
                 }
+
             }
         };
 

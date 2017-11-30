@@ -2,27 +2,24 @@ package com.kaishengit.crm.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.kaishengit.crm.entity.Customer;
-import com.kaishengit.crm.entity.Dept;
-import com.kaishengit.crm.entity.User;
-import com.kaishengit.crm.entity.UserDeptKey;
+import com.kaishengit.crm.entity.*;
 import com.kaishengit.crm.example.CustomerExample;
 import com.kaishengit.crm.example.DeptExample;
 import com.kaishengit.crm.example.UserDeptExample;
 import com.kaishengit.crm.example.UserExample;
 import com.kaishengit.crm.exception.AuthenticationException;
 import com.kaishengit.crm.exception.ServiceException;
-import com.kaishengit.crm.mapper.CustomerMapper;
-import com.kaishengit.crm.mapper.DeptMapper;
-import com.kaishengit.crm.mapper.UserDeptMapper;
-import com.kaishengit.crm.mapper.UserMapper;
+import com.kaishengit.crm.mapper.*;
 import com.kaishengit.crm.service.UserService;
+import com.kaishengit.weixin.WinXinUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +37,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDeptMapper userDeptMapper;
     @Autowired
-    private CustomerMapper customerMapper;
+    private WinXinUtil winXinUtil;
+    @Autowired
+    private SaleChanceRecordMapper saleChanceRecordMapper;
 
     /**
      * 公司ID
@@ -104,6 +103,9 @@ public class UserServiceImpl implements UserService {
         dept.setDeptName(deptName);
         dept.setpId(COMPANY_ID);
         deptMapper.insertSelective(dept);
+        System.out.println(dept.getId());
+
+        winXinUtil.createDept(deptName,COMPANY_ID,dept.getId());
         logger.info("添加新部门{}", deptName);
 
     }
@@ -182,7 +184,10 @@ public class UserServiceImpl implements UserService {
             userDeptKey.setUserId(user.getId());
             userDeptMapper.insert(userDeptKey);
 
+
         }
+        winXinUtil.createUser(user.getId(),userName, Arrays.asList(deptIdList),mobile);
+
         logger.info("添加新账号{}",userName);
     }
 
@@ -203,87 +208,56 @@ public class UserServiceImpl implements UserService {
         //删除用户
         userMapper.deleteByPrimaryKey(id);
 
+        winXinUtil.deleteUser(id);
 
     }
 
     /**
-     * 根据userId查询客户
+     * 查找所有账户
      *
-     * @param pageNO
-     * @param userId
      * @return
      */
     @Override
-    public PageInfo<Customer> findAllCustomer(Integer pageNO, Integer userId) {
+    public List<User> findAllUser() {
 
-        PageHelper.startPage(pageNO,5);
-
-        CustomerExample customerExample = new CustomerExample();
-        customerExample.createCriteria().andUserIdEqualTo(userId);
-        List<Customer> list = customerMapper.selectByExample(customerExample);
-        return new PageInfo<>(list);
-
+        return userMapper.selectByExample(new UserExample());
     }
 
     /**
-     * 查询所有客户
-     *
-     * @param userId
-     * @return
-     */
-    @Override
-    public List<Customer> findAll(Integer userId) {
-
-        CustomerExample customerExample = new CustomerExample();
-        customerExample.createCriteria().andUserIdEqualTo(userId);
-        return customerMapper.selectByExample(customerExample);
-    }
-
-    /**
-     * 添加客户,如果已经存在抛出异常
-     *
-     * @param customer
-     * @throws ServiceException
-     */
-    @Override
-    public void addCustomer(Integer userId,Customer customer) throws ServiceException {
-
-        //查询客户是否已经存在
-        CustomerExample customerExample = new CustomerExample();
-        customerExample.createCriteria().andMobileEqualTo(customer.getMobile());
-        List<Customer> customerList = customerMapper.selectByExample(customerExample);
-
-        if (customerList != null && !customerList.isEmpty()) {
-            throw new ServiceException("该客户已存在");
-        }
-        //添加客户
-        Customer cust = new Customer();
-        cust.setCustName(customer.getCustName());
-        cust.setJobTitle(customer.getJobTitle());
-        cust.setMobile(customer.getMobile());
-        cust.setAddress(customer.getAddress());
-        cust.setTrade(customer.getTrade());
-        cust.setLevel(customer.getLevel());
-        cust.setSource(customer.getSource());
-        cust.setSex(customer.getSex());
-        cust.setUpdateTime(customer.getUpdateTime());
-        cust.setUserId(userId);
-        customerMapper.insertSelective(cust);
-
-    }
-
-    /**
-     * 根据id查询Customer对象
+     * 查找客户对应的销售进度
      *
      * @param id
      * @return
      */
     @Override
-    public Customer findCustomerDetailById(Integer id) {
-
-        return customerMapper.selectByPrimaryKey(id);
-
+    public List<SaleChanceRecord> findSaleChanceRecordList(Integer id) {
+         List<SaleChanceRecord> saleChanceRecordList = saleChanceRecordMapper.findSaleChanceRecordList(id);
+         return saleChanceRecordList;
     }
 
+    /**
+     * 验证登录
+     * @param mobile
+     * @return
+     */
+    @Override
+    public User findByMobile(String mobile) {
+        UserExample userExample = new UserExample();
+        userExample.createCriteria().andMobileEqualTo(mobile);
+        List<User> userList = userMapper.selectByExample(userExample);
+        return userList.get(0);
+    }
+
+    /**
+     * 查询账户对应的部门列表
+     *
+     * @param userId
+     * @return
+     */
+    @Override
+    public List<Dept> findDeptByUserId(Integer userId) {
+
+        return deptMapper.findDeptByUserId(userId);
+    }
 
 }

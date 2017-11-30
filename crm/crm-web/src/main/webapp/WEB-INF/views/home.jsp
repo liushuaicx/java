@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,7 +57,9 @@
                     </div>
                 </div>
                 <div class="box-body">
-                    Start creating your amazing application!
+                    <shiro:hasRole name="开发部">
+                        欢迎你,开发部人员
+                    </shiro:hasRole>
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer">

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <!--数据库连接-->
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql:///account</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">123456</property>
+        <!--配置方言-->
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <!--开启二级缓存 maven依赖中的地址-->
+        <property name="hibernate.cache.region.factory_class">
+            org.hibernate.cache.ehcache.EhCacheRegionFactory
+        </property>
+        
+        <!--配置数据库连接池 C3P0-->
+        <property name="c3p0.max_size">2</property>
+        <property name="c3p0.min_size">2</property>
+        <property name="c3p0.timeout">5000</property>
+        <property name="c3p0.max_statements">100</property>
+        <property name="c3p0.idle_test_period">3000</property>
+        <property name="c3p0.acquire_increment">2</property>
+        <property name="c3p0.validate">false</property>
+        <!--显示自动生成的Sql-->
+        <property name="hibernate.show_sql">true</property>
+        
+        <property name="hibernate.current_session_context_class">thread</property>
+
+        <mapping class="com.kaishengit.pojo.Customer"/>
+        <mapping class="com.kaishengit.pojo.Student"/>
+        <mapping class="com.kaishengit.pojo.User"/>
+        <mapping class="com.kaishengit.pojo.Address"/>
+        <mapping class="com.kaishengit.pojo.Stu"/>
+        <mapping class="com.kaishengit.pojo.Teacher"/>
+
+
+        <!--&lt;!&ndash;注册映射文件&ndash;&gt;-->
+        <!--<mapping resource="hbm/student.hbm.xml"/>-->
+        <!--<mapping resource="hbm/Address.hbm.xml"/>-->
+        <!--<mapping resource="hbm/User.hbm.xml"/>-->
+        <!--<mapping resource="hbm/Stu.hbm.xml"/>-->
+        <!--<mapping resource="hbm/Teacher.hbm.xml"/>-->
+        <!--<mapping resource="hbm/person.hbm.xml"/>-->
+        <!--<mapping resource="hbm/card.hbm.xml"/>-->
+    </session-factory>
+</hibernate-configuration>

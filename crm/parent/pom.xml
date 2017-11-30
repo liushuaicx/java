@@ -16,6 +16,7 @@
         <module>../crm-service</module>
         <module>../crm-serviceImpl</module>
         <module>../crm-web</module>
+        <module>../weixin</module>
     </modules>
 
     <properties>
@@ -72,6 +73,11 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-webmvc</artifactId>
+                <version>4.3.12.RELEASE</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context-support</artifactId>
                 <version>4.3.12.RELEASE</version>
             </dependency>
         </dependencies>
