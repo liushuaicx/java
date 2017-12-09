@@ -11,8 +11,21 @@
 </head>
 <body>
     <div class="container">
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form action="" class="form-inline">
+                    <input id="productName" value="${param.q_like_s_productName}" type="text" placeholder="商品名称" class="form-control" name="q_like_s_productName">
+                    <input id="price" value="${param.q_eq_bd_price_or_marketPrice}" type="text" placeholder="价格 或 市场价格" class="form-control" name="q_eq_bd_price_or_marketPrice">
+                    <button class="btn btn-default">搜索</button>
+                </form>
+            </div>
+        </div>
         <p></p>
         <a class="btn btn-primary" href="/product/new">添加商品</a>
+        <c:if test="${not empty param}">
+            <a class="btn btn-default" href="/product">返回</a>
+        </c:if>
         <table class="table">
             <thead>
                 <tr>
@@ -26,7 +39,7 @@
                 </tr>
             </thead>
             <tbody>
-                <c:forEach items="${productList}" var="product">
+                <c:forEach items="${page.items}" var="product">
                     <tr>
                         <td>${product.productName}</td>
                         <td>${product.price}</td>
@@ -43,6 +56,27 @@
             </tbody>
 
         </table>
+        <ul id="pagination" class="pagination pagination-lg"></ul>
     </div>
+
+<script src="/static/js/jquery-2.2.3.min.js"></script>
+<script src="/static/js/jquery.twbsPagination.min.js"/>
+<script>
+    $(function(){
+
+        $("#pagination").twbsPagination({
+            totalPages:"${page.pageTotal}",
+            visiblePages:5,
+            href:"/product?p={{number}}&q_like_s_productName=${param.q_like_s_productName}&q_eq_bd_price_or_marketPrice=${param.q_eq_bd_price_or_marketPrice}",
+            first: "首页",
+            prev: "上一页",
+            next:"下一页",
+            last:"末页"
+        });
+    });
+
+
+</script>
+
 </body>
 </html>

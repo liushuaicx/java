@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div th:replace="~{comment::header('2018')}"></div>
+
+    <h3 th:text="${message}"></h3>
+    <h3 th:text="${message == 'hello'}"></h3>
+    <h3 th:if="${message == 'hello'}">你好吗</h3>
+    <h3 th:unless="${message == 'hello'}">hi</h3>
+    <ul th:switch="${message}">
+        <li th:case="hello1">正确</li>
+        <li th:case="hello2">√</li>
+        <li th:case="*">other</li>
+    </ul>
+
+    <ul>
+        <li th:each="name:${nameList}" th:text="${name}"></li>
+    </ul>
+    <input type="text" th:value="123">
+    <span th:attr="name=${message}"></span>
+    <a th:href="@{/hello(id=${message})}" th:text="lianjie"></a>
+    <a th:href="@{/hello/{name}/show(name='hello')}"></a>
+
+    <div th:replace="~{comment::footer}"></div>
+<script th:inline="javascript">
+    [# th:if="${message != null}"]
+    var message= [[${message}]]
+    [/]
+</script>
+</body>
+</html>

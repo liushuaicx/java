@@ -19,11 +19,10 @@ public class ProductServiceTest {
     @Test
     public void findAll() throws Exception {
 
-        List<Product> productList = productService.findAll();
+        productService.count();
 
-        for (Product product : productList) {
-            System.out.println(product.getProductName());
-        }
+
+
     }
 
 }
