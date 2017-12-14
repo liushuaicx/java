@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @author 
+ * @author FOREIGN_KEY_CHECKS
  */
 public class Task implements Serializable {
     private Integer id;

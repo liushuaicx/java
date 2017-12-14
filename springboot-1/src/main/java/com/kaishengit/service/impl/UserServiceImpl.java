@@ -1,7 +1,8 @@
-package com.kaishengit.springboot1.service.impl;
+package com.kaishengit.service.impl;
 
-import com.kaishengit.springboot1.mapper.UserMapper;
-import com.kaishengit.springboot1.service.UserService;
+import com.kaishengit.entity.User;
+import com.kaishengit.mapper.UserMapper;
+import com.kaishengit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,4 +16,9 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
 
+    @Override
+    public void save(User user) {
+
+        userMapper.insert(user);
+    }
 }

@@ -1,6 +1,8 @@
 package com.kaishengit.crm.entity;
 
-public class UserDeptKey {
+import java.io.Serializable;
+
+public class UserDeptKey implements Serializable {
     private Integer userId;
 
     private Integer deptId;

@@ -167,7 +167,6 @@ public class TaskServiceImpl implements TaskService {
                     .append(" ").append(dateTime.getMonthOfYear())
                     .append(" ? ").append(dateTime.getYear());
 
-            System.out.println(cron.toString());
 
             ScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(cron.toString());
 

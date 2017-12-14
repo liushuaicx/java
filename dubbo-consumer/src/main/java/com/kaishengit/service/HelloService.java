@@ -1,4 +1,7 @@
 package com.kaishengit.service;
 
-public class HelloService {
+
+public interface HelloService {
+
+    void sayHello(String name);
 }

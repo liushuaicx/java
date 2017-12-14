@@ -2,9 +2,12 @@ package com.kaishengit.crm.controller;
 
 import com.kaishengit.crm.controller.exception.NotFoundException;
 import com.kaishengit.crm.entity.Disk;
-import com.kaishengit.crm.entity.User;
+import com.kaishengit.crm.exception.ServiceException;
+import com.kaishengit.crm.files.QiNiuFileStore;
+import com.kaishengit.crm.mapper.DiskMapper;
 import com.kaishengit.crm.service.DiskService;
 import com.kaishengit.web.result.AjaxResult;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +17,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,6 +33,8 @@ public class DiskController extends BaseController {
 
     @Autowired
     private DiskService diskService;
+    @Autowired
+    private DiskMapper diskMapper;
 
     @GetMapping()
     public String disk(Model model,@RequestParam(required = false,defaultValue = "0",name = "_") Integer pid) {
@@ -46,6 +52,8 @@ public class DiskController extends BaseController {
     @PostMapping("/new")
     @ResponseBody
     public AjaxResult newDir(Disk disk) {
+
+        System.out.println(disk.getName());
 
         diskService.newDir(disk);
         List<Disk> diskList = diskService.findAllDiskByPid(disk.getPid());
@@ -67,7 +75,26 @@ public class DiskController extends BaseController {
         //获取文件真正的 名称
         String fileName = file.getOriginalFilename();
 
-        diskService.saveNewFile(inputStream,fileName,fileSize,userId,pid);
+        String newFileName = null;
+        try {
+            QiNiuFileStore qiNiuFileStore = new QiNiuFileStore();
+            newFileName = qiNiuFileStore.saveFile(inputStream,fileName);
+        } catch (IOException e) {
+            throw new  RuntimeException("文件上传异常",e);
+        }
+
+        Disk disk = new Disk();
+        //字节转化为可阅读大小
+        disk.setFileSize(FileUtils.byteCountToDisplaySize(fileSize));
+        disk.setType(Disk.CREATE_FILE);
+        disk.setPid(pid);
+        disk.setUserId(userId);
+        disk.setUpdateTime(new Date());
+        disk.setSaveName(newFileName);
+        disk.setName(fileName);
+        disk.setDowloadCount("0");
+        //数据库保存文件
+        diskMapper.insertSelective(disk);
 
         List<Disk> diskList = diskService.findAllDiskByPid(pid);
         return AjaxResult.successWithData(diskList);
@@ -80,7 +107,25 @@ public class DiskController extends BaseController {
 
         try {
             OutputStream outputStream = response.getOutputStream();
-            InputStream inputStream = diskService.downloadFile(id);
+
+            Disk disk = diskMapper.selectByPrimaryKey(id);
+            if (disk == null || disk.getType().equals(Disk.CREATE_DIR)) {
+                throw new ServiceException("文件不存在或已被删除");
+            }
+            //下载数量加1
+            disk.setDowloadCount(disk.getDowloadCount()+1);
+            diskMapper.updateByPrimaryKey(disk);
+
+            byte[] bytes = null;
+            try {
+                QiNiuFileStore qiNiuFileStore = new QiNiuFileStore();
+                bytes = qiNiuFileStore.getFile(disk.getSaveName());
+            } catch (IOException e) {
+                throw new RuntimeException("下载失败",e);
+            }
+
+            //byte转inputStream
+            InputStream inputStream = new ByteArrayInputStream(bytes);
 
             //判断是下载还是预览
             if (StringUtils.isNotEmpty(fileName)) {

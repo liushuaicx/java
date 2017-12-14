@@ -11,6 +11,11 @@ import com.kaishengit.crm.entity.User;
 import com.kaishengit.crm.exception.ServiceException;
 import com.kaishengit.crm.service.CustomerService;
 import com.kaishengit.crm.service.UserService;
+import org.apache.commons.io.IOUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +26,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
@@ -152,7 +156,7 @@ public class CustomerController {
     public void exportCsv(HttpSession session, HttpServletResponse response)
             throws IOException {
 
-        User user = (User) session.getAttribute("curr_user");
+        User user = ShiroUtils.getCurrentUser();
 
         //设置mimeType
         response.setContentType("text/csv;charset=GBK");
@@ -160,7 +164,24 @@ public class CustomerController {
         //设置处理方式
         response.setHeader("Content-Disposition","attachment; fileName=\""+fileName+"\"");
         OutputStream outputStream = response.getOutputStream();
-        customerService.exportCsvToOutputStream(user,outputStream);
+        //根据user查找对应列表
+        List<Customer> customerList = customerService.findAll(user.getId());
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("姓名").append(",")
+                .append("性别").append(",")
+                .append("职位").append(",")
+                .append("电话").append("\r\n");
+
+        for (Customer customer : customerList) {
+            stringBuilder.append(customer.getCustName()).append(",")
+                    .append(customer.getSex()).append(",")
+                    .append(customer.getJobTitle()).append(",")
+                    .append(customer.getMobile()).append("\r\n");
+        }
+        IOUtils.write(stringBuilder.toString(),outputStream,"GBK");
+        outputStream.flush();
+        outputStream.close();
     }
 
     /**
@@ -173,7 +194,7 @@ public class CustomerController {
     public void exportXls(HttpSession session,HttpServletResponse response)
             throws IOException {
 
-        User user = (User) session.getAttribute("curr_user");
+        User user = ShiroUtils.getCurrentUser();
 
         //设置mimeType
         response.setContentType("application/vnd.ms-excel");
@@ -181,7 +202,35 @@ public class CustomerController {
         //设置处理方式
         response.setHeader("Content-Disposition","attachment; fileName=\""+fileName+"\"");
         OutputStream outputStream = response.getOutputStream();
-        customerService.exportXlsToOutputStream(user,outputStream);
+
+        //根据user查找对应列表
+        List<Customer> customerList = customerService.findAll(user.getId());
+        //创建工作表 Workbook
+        Workbook workbook = new HSSFWorkbook();
+        //创建sheet,页签
+        Sheet sheet = workbook.createSheet("我的客户");
+        //创建行 Row
+        Row row = sheet.createRow(0);
+        //创建单元格
+        row.createCell(0).setCellValue("姓名");
+        row.createCell(1).setCellValue("性别");
+        row.createCell(2).setCellValue("职位");
+        row.createCell(3).setCellValue("电话");
+
+        for (int i = 0; i< customerList.size();i++) {
+            //获得循环对象
+            Customer customer = customerList.get(i);
+            //创建数据行
+            org.apache.poi.ss.usermodel.Row dataRow = sheet.createRow(i+1);
+            dataRow.createCell(0).setCellValue(customer.getCustName());
+            dataRow.createCell(1).setCellValue(customer.getSex());
+            dataRow.createCell(2).setCellValue(customer.getJobTitle());
+            dataRow.createCell(3).setCellValue(customer.getMobile());
+        }
+
+        workbook.write(outputStream);
+        outputStream.flush();
+        outputStream.close();
     }
 
 

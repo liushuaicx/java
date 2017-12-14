@@ -68,9 +68,6 @@ public class UserController {
     @PostMapping("/addUser")
     @ResponseBody
     public AjaxResult addUser(String userName,String mobile,String password,Integer[] deptId) {
-        for (Integer d_id :deptId) {
-            System.out.println(d_id);
-        }
 
         try {
             userService.addUser(userName, mobile, password, deptId);

@@ -103,7 +103,6 @@ public class UserServiceImpl implements UserService {
         dept.setDeptName(deptName);
         dept.setpId(COMPANY_ID);
         deptMapper.insertSelective(dept);
-        System.out.println(dept.getId());
 
         winXinUtil.createDept(deptName,COMPANY_ID,dept.getId());
         logger.info("添加新部门{}", deptName);
@@ -123,7 +122,6 @@ public class UserServiceImpl implements UserService {
         Integer length = (Integer) queryParam.get("length");
         Integer deptId = (Integer) queryParam.get("deptId");
         String userName = (String) queryParam.get("userName");
-        System.out.println("**************>"+deptId);
         if (deptId == null || COMPANY_ID.equals(deptId)) {
             deptId = null;
         }
@@ -144,7 +142,6 @@ public class UserServiceImpl implements UserService {
         if (deptId == null || COMPANY_ID.equals(deptId)) {
             deptId = null;
         }
-        System.out.println("--------------impl------->"+deptId);
         return userMapper.countByDepyId(deptId);
     }
 

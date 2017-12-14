@@ -7,17 +7,6 @@
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
 
-        <!-- 搜索表单，不需要删除即可 -->
-        <!--<form action="#" method="get" class="sidebar-form">
-          <div class="input-group">
-            <input type="text" name="q" class="form-control" placeholder="Search...">
-                <span class="input-group-btn">
-                  <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                  </button>
-                </span>
-          </div>
-        </form>-->
-        <!-- /.search form -->
         <!-- 菜单 -->
         <ul class="sidebar-menu">
             <li class="header">系统功能</li>
@@ -72,8 +61,7 @@
             <!-- 部门员工管理 -->
             <li class="${param.menu == 'list' ? 'active' : ''}"><a href="/user/list"><i class="fa fa-users"></i> <span>员工管理</span></a></li>
             </shiro:hasRole>
-            <!--<li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
-            <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>-->
+
         </ul>
     </section>
     <!-- /.sidebar -->

@@ -59,6 +59,7 @@ public class HomeController {
         try {
             Subject subject = ShiroUtils.getSubject();
             UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(mobile,new Md5Hash(password).toString(),rememberMe);
+            System.out.println(new Md5Hash(password).toString());
             subject.login(usernamePasswordToken);
 
             //转到登陆前url

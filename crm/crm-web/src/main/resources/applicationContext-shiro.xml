@@ -6,7 +6,7 @@
 
     <!--配置shoriRealm-->
     <bean id="shiroRealm" class="com.kaishengit.crm.auth.ShiroRealm">
-        <property name="userService" ref="userServiceImpl"/>
+        <property name="userService" ref="userService"/>
     </bean>
 
     <!--配置缓存管理-->

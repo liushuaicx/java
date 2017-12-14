@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -177,10 +178,8 @@
 </script>
 <script>
     $(function () {
-
         var pid = ${not empty requestScope.disk ? requestScope.disk.id : '0'};
-        var userId = ${sessionScope.curr_user.id};
-
+        var userId = <shiro:principal property="id"/>
 
         //添加新文件夹
         $("#showNewFolderModal").click(function () {

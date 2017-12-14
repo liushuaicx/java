@@ -1,7 +1,5 @@
 package com.kaishengit.crm.files;
 
-import org.csource.common.MyException;
-
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -18,7 +16,7 @@ public interface FileStore {
      * @return 文件存放路径
      * @throws IOException
      */
-    String saveFile(InputStream inputStream,String fileName) throws IOException;
+    String saveFile(InputStream inputStream, String fileName) throws IOException;
 
     /**下载文件
      * @param fileName 文件名或者文件路径

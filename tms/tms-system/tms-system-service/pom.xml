@@ -12,5 +12,16 @@
     <artifactId>tms-system-service</artifactId>
     <packaging>jar</packaging>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.kaishengit</groupId>
+            <artifactId>tms-common</artifactId>
+        </dependency>
+    </dependencies>
+
 
 </project>

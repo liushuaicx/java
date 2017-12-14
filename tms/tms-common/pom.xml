@@ -26,13 +26,6 @@
         </repository>
     </distributionManagement>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-all</artifactId>
-            <version>1.4.0</version>
-        </dependency>
-    </dependencies>
 
 
 </project>

@@ -33,6 +33,7 @@ public class ShiroRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         //获取当前登录的对象
         User user = (User) principalCollection.getPrimaryPrincipal();
+        System.out.println(user.getId());
         //获区当前对象的部门列表
         List<Dept> deptList = userService.findDeptByUserId(user.getId());
         //获取Dept集合中的名称,创建字符串列表
