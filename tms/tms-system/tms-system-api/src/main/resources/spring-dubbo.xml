@@ -10,4 +10,5 @@
 
     <dubbo:reference interface="com.kaishengit.tms.system.service.AccountService" id="accountService"/>
     <dubbo:reference interface="com.kaishengit.tms.system.service.ScenicService" id="scenicService"/>
+    <dubbo:reference interface="com.kaishengit.tms.system.service.TicketStoreService" id="ticketStoreService"/>
 </beans>

@@ -14,5 +14,7 @@
 
     <dubbo:service interface="com.kaishengit.tms.system.service.AccountService" ref="accountServiceImpl"/>
     <dubbo:service interface="com.kaishengit.tms.system.service.ScenicService" ref="scenicServiceImpl"/>
+    <dubbo:service interface="com.kaishengit.tms.system.service.TicketStoreService" ref="ticketStoreServiceImpl"/>
+    <dubbo:service interface="com.kaishengit.tms.system.service.StoreService" ref="storeServiceImpl"/>
     <!--<dubbo:annotation package="com.kaishengit.tms.system.service.impl.AccountServiceImpl"/>-->
 </beans>

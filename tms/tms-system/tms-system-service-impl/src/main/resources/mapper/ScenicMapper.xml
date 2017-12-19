@@ -109,7 +109,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.kaishengit.tms.entity.Scenic">
+  <insert id="insert" parameterType="com.kaishengit.tms.entity.Scenic" useGeneratedKeys="true" keyProperty="id">
     insert into scenic (id, scenic_name, scenic_level, 
       scenic_address, scenic_geo_longitude, scenic_geo_latitude, 
       scenic_manager, scenic_tel, scenic_intro, 
