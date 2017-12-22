@@ -41,11 +41,6 @@ public class Scenic implements Serializable {
 
     private String scenicTel;
 
-    /**
-     * 景区介绍
-     */
-    private String scenicIntro;
-
     private Date createTime;
 
     private Date updateTime;
@@ -56,6 +51,11 @@ public class Scenic implements Serializable {
     private String scenicAttachment;
 
     private Integer scenicAccountId;
+
+    /**
+     * 景区介绍
+     */
+    private String scenicIntro;
 
     private static final long serialVersionUID = 1L;
 
@@ -123,14 +123,6 @@ public class Scenic implements Serializable {
         this.scenicTel = scenicTel;
     }
 
-    public String getScenicIntro() {
-        return scenicIntro;
-    }
-
-    public void setScenicIntro(String scenicIntro) {
-        this.scenicIntro = scenicIntro;
-    }
-
     public Date getCreateTime() {
         return createTime;
     }
@@ -161,5 +153,13 @@ public class Scenic implements Serializable {
 
     public void setScenicAccountId(Integer scenicAccountId) {
         this.scenicAccountId = scenicAccountId;
+    }
+
+    public String getScenicIntro() {
+        return scenicIntro;
+    }
+
+    public void setScenicIntro(String scenicIntro) {
+        this.scenicIntro = scenicIntro;
     }
 }

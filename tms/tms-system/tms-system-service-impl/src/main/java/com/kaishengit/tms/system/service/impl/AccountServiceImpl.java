@@ -8,6 +8,7 @@ import com.kaishengit.tms.exception.ServiceException;
 import com.kaishengit.tms.mapper.AccountLoginLogMapper;
 import com.kaishengit.tms.mapper.AccountMapper;
 import com.kaishengit.tms.mapper.AccountRoleMapper;
+import com.kaishengit.tms.mapper.RoleMapper;
 import com.kaishengit.tms.system.service.AccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,13 +34,16 @@ public class AccountServiceImpl implements AccountService {
     private AccountLoginLogMapper accountLoginLogMapper;
     @Autowired
     private AccountRoleMapper accountRoleMapper;
+    @Autowired
+    private RoleMapper roleMapper;
 
 
 
     @Override
     public List<Role> findRoleByAccountId(Integer id) {
 
-        return accountRoleMapper.findByAccountId(id);
+        List<Role> roleList = accountRoleMapper.findByAccountId(id);
+        return roleList;
     }
 
     @Override
@@ -118,7 +122,21 @@ public class AccountServiceImpl implements AccountService {
     public void updateAccount(Account account, Integer[] roleIdList) {
         //修改账户
         accountMapper.updateByPrimaryKey(account);
-        //TODO 修改账户对应的角色
+        //修改账户对应的角色
+
+        if (roleIdList != null) {
+            //通过accountId删除关联关系
+            AccountRoleExample accountRoleExample = new AccountRoleExample();
+            accountRoleExample.createCriteria().andAccountIdEqualTo(account.getId());
+            accountRoleMapper.deleteByExample(accountRoleExample);
+            //创建关联关系
+            for (Integer id : roleIdList) {
+                AccountRoleKey accountRoleKey = new AccountRoleKey();
+                accountRoleKey.setAccountId(account.getId());
+                accountRoleKey.setRoleId(id);
+                accountRoleMapper.insert(accountRoleKey);
+            }
+        }
         logger.info("修改账户{},id为{}",account.getAccountName(),account.getId());
     }
 
@@ -129,6 +147,17 @@ public class AccountServiceImpl implements AccountService {
         AccountExample accountExample = new AccountExample();
         List<Account> accountList = accountMapper.selectByExample(accountExample);
         return new PageInfo<>(accountList);
+    }
+
+    /**
+     * 查询角色列表
+     * @return
+     */
+    @Override
+    public List<Role> findAllRole() {
+        RoleExample roleExample = new RoleExample();
+        List<Role> roleList = roleMapper.selectByExample(roleExample);
+        return roleList;
     }
 
 

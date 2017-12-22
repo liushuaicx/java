@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -40,6 +41,7 @@ public class TicketStoreServiceImpl implements TicketStoreService {
     }
 
     @Override
+    @Transactional(rollbackFor = RuntimeException.class)
     public StoreAccount newTicketStore(TicketStore ticketStore) {
         //添加售票点
         ticketStore.setCreateTime(new Date());
@@ -48,11 +50,13 @@ public class TicketStoreServiceImpl implements TicketStoreService {
         StoreAccount storeAccount = new StoreAccount();
         storeAccount.setCreateTime(new Date());
         storeAccount.setTicketStoreId(ticketStore.getId());
-        String password = new Md5Hash(123).toString();
-        storeAccount.setStorePassword(password);
+        storeAccount.setStorePassword(new Md5Hash("123").toString());
         storeAccount.setStoreAccount(ticketStore.getStoreTel());
         storeAccount.setStoreState("正常");
         storeAccountMapper.insert(storeAccount);
+        //添加售票点账号到售票点
+        ticketStore.setStoreAccountId(storeAccount.getId());
+        ticketStoreMapper.updateByPrimaryKey(ticketStore);
         logger.info("添加售票点{},账号为{}",ticketStore.getStoreName(),storeAccount.getStoreAccount());
         return storeAccount;
     }

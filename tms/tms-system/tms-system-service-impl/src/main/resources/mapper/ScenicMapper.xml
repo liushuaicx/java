@@ -10,11 +10,13 @@
     <result column="scenic_geo_latitude" jdbcType="VARCHAR" property="scenicGeoLatitude" />
     <result column="scenic_manager" jdbcType="VARCHAR" property="scenicManager" />
     <result column="scenic_tel" jdbcType="VARCHAR" property="scenicTel" />
-    <result column="scenic_intro" jdbcType="VARCHAR" property="scenicIntro" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="scenic_attachment" jdbcType="VARCHAR" property="scenicAttachment" />
     <result column="scenic_account_id" jdbcType="INTEGER" property="scenicAccountId" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.kaishengit.tms.entity.Scenic">
+    <result column="scenic_intro" jdbcType="LONGVARCHAR" property="scenicIntro" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -76,9 +78,27 @@
   </sql>
   <sql id="Base_Column_List">
     id, scenic_name, scenic_level, scenic_address, scenic_geo_longitude, scenic_geo_latitude, 
-    scenic_manager, scenic_tel, scenic_intro, create_time, update_time, scenic_attachment, 
-    scenic_account_id
+    scenic_manager, scenic_tel, create_time, update_time, scenic_attachment, scenic_account_id
   </sql>
+  <sql id="Blob_Column_List">
+    scenic_intro
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.kaishengit.tms.entity.ScenicExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from scenic
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
   <select id="selectByExample" parameterType="com.kaishengit.tms.entity.ScenicExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
@@ -93,9 +113,11 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
     from scenic
     where id = #{id,jdbcType=INTEGER}
   </select>
@@ -109,17 +131,17 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.kaishengit.tms.entity.Scenic" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insert" parameterType="com.kaishengit.tms.entity.Scenic">
     insert into scenic (id, scenic_name, scenic_level, 
       scenic_address, scenic_geo_longitude, scenic_geo_latitude, 
-      scenic_manager, scenic_tel, scenic_intro, 
-      create_time, update_time, scenic_attachment, 
-      scenic_account_id)
+      scenic_manager, scenic_tel, create_time, 
+      update_time, scenic_attachment, scenic_account_id, 
+      scenic_intro)
     values (#{id,jdbcType=INTEGER}, #{scenicName,jdbcType=VARCHAR}, #{scenicLevel,jdbcType=VARCHAR}, 
       #{scenicAddress,jdbcType=VARCHAR}, #{scenicGeoLongitude,jdbcType=VARCHAR}, #{scenicGeoLatitude,jdbcType=VARCHAR}, 
-      #{scenicManager,jdbcType=VARCHAR}, #{scenicTel,jdbcType=VARCHAR}, #{scenicIntro,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{scenicAttachment,jdbcType=VARCHAR}, 
-      #{scenicAccountId,jdbcType=INTEGER})
+      #{scenicManager,jdbcType=VARCHAR}, #{scenicTel,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{scenicAttachment,jdbcType=VARCHAR}, #{scenicAccountId,jdbcType=INTEGER}, 
+      #{scenicIntro,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.kaishengit.tms.entity.Scenic">
     insert into scenic
@@ -148,9 +170,6 @@
       <if test="scenicTel != null">
         scenic_tel,
       </if>
-      <if test="scenicIntro != null">
-        scenic_intro,
-      </if>
       <if test="createTime != null">
         create_time,
       </if>
@@ -162,6 +181,9 @@
       </if>
       <if test="scenicAccountId != null">
         scenic_account_id,
+      </if>
+      <if test="scenicIntro != null">
+        scenic_intro,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -189,9 +211,6 @@
       <if test="scenicTel != null">
         #{scenicTel,jdbcType=VARCHAR},
       </if>
-      <if test="scenicIntro != null">
-        #{scenicIntro,jdbcType=VARCHAR},
-      </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -203,6 +222,9 @@
       </if>
       <if test="scenicAccountId != null">
         #{scenicAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="scenicIntro != null">
+        #{scenicIntro,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -239,9 +261,6 @@
       <if test="record.scenicTel != null">
         scenic_tel = #{record.scenicTel,jdbcType=VARCHAR},
       </if>
-      <if test="record.scenicIntro != null">
-        scenic_intro = #{record.scenicIntro,jdbcType=VARCHAR},
-      </if>
       <if test="record.createTime != null">
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
@@ -254,7 +273,29 @@
       <if test="record.scenicAccountId != null">
         scenic_account_id = #{record.scenicAccountId,jdbcType=INTEGER},
       </if>
+      <if test="record.scenicIntro != null">
+        scenic_intro = #{record.scenicIntro,jdbcType=LONGVARCHAR},
+      </if>
     </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update scenic
+    set id = #{record.id,jdbcType=INTEGER},
+      scenic_name = #{record.scenicName,jdbcType=VARCHAR},
+      scenic_level = #{record.scenicLevel,jdbcType=VARCHAR},
+      scenic_address = #{record.scenicAddress,jdbcType=VARCHAR},
+      scenic_geo_longitude = #{record.scenicGeoLongitude,jdbcType=VARCHAR},
+      scenic_geo_latitude = #{record.scenicGeoLatitude,jdbcType=VARCHAR},
+      scenic_manager = #{record.scenicManager,jdbcType=VARCHAR},
+      scenic_tel = #{record.scenicTel,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      scenic_attachment = #{record.scenicAttachment,jdbcType=VARCHAR},
+      scenic_account_id = #{record.scenicAccountId,jdbcType=INTEGER},
+      scenic_intro = #{record.scenicIntro,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -269,7 +310,6 @@
       scenic_geo_latitude = #{record.scenicGeoLatitude,jdbcType=VARCHAR},
       scenic_manager = #{record.scenicManager,jdbcType=VARCHAR},
       scenic_tel = #{record.scenicTel,jdbcType=VARCHAR},
-      scenic_intro = #{record.scenicIntro,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       scenic_attachment = #{record.scenicAttachment,jdbcType=VARCHAR},
@@ -302,9 +342,6 @@
       <if test="scenicTel != null">
         scenic_tel = #{scenicTel,jdbcType=VARCHAR},
       </if>
-      <if test="scenicIntro != null">
-        scenic_intro = #{scenicIntro,jdbcType=VARCHAR},
-      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -317,7 +354,26 @@
       <if test="scenicAccountId != null">
         scenic_account_id = #{scenicAccountId,jdbcType=INTEGER},
       </if>
+      <if test="scenicIntro != null">
+        scenic_intro = #{scenicIntro,jdbcType=LONGVARCHAR},
+      </if>
     </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.kaishengit.tms.entity.Scenic">
+    update scenic
+    set scenic_name = #{scenicName,jdbcType=VARCHAR},
+      scenic_level = #{scenicLevel,jdbcType=VARCHAR},
+      scenic_address = #{scenicAddress,jdbcType=VARCHAR},
+      scenic_geo_longitude = #{scenicGeoLongitude,jdbcType=VARCHAR},
+      scenic_geo_latitude = #{scenicGeoLatitude,jdbcType=VARCHAR},
+      scenic_manager = #{scenicManager,jdbcType=VARCHAR},
+      scenic_tel = #{scenicTel,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      scenic_attachment = #{scenicAttachment,jdbcType=VARCHAR},
+      scenic_account_id = #{scenicAccountId,jdbcType=INTEGER},
+      scenic_intro = #{scenicIntro,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.kaishengit.tms.entity.Scenic">
@@ -329,7 +385,6 @@
       scenic_geo_latitude = #{scenicGeoLatitude,jdbcType=VARCHAR},
       scenic_manager = #{scenicManager,jdbcType=VARCHAR},
       scenic_tel = #{scenicTel,jdbcType=VARCHAR},
-      scenic_intro = #{scenicIntro,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       scenic_attachment = #{scenicAttachment,jdbcType=VARCHAR},

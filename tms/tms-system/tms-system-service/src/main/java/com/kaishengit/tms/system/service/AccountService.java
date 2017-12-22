@@ -28,4 +28,11 @@ public interface AccountService {
     void updateAccount(Account account, Integer[] roleIdList);
 
     PageInfo<Account> findAccountListByPage(Integer pageNo);
+
+    /**
+     * 查询角色列表
+     * @return
+     */
+    List<Role> findAllRole();
+
 }

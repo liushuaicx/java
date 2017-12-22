@@ -16,15 +16,21 @@ public interface ScenicMapper {
 
     int insertSelective(Scenic record);
 
+    List<Scenic> selectByExampleWithBLOBs(ScenicExample example);
+
     List<Scenic> selectByExample(ScenicExample example);
 
     Scenic selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") Scenic record, @Param("example") ScenicExample example);
 
+    int updateByExampleWithBLOBs(@Param("record") Scenic record, @Param("example") ScenicExample example);
+
     int updateByExample(@Param("record") Scenic record, @Param("example") ScenicExample example);
 
     int updateByPrimaryKeySelective(Scenic record);
+
+    int updateByPrimaryKeyWithBLOBs(Scenic record);
 
     int updateByPrimaryKey(Scenic record);
 }

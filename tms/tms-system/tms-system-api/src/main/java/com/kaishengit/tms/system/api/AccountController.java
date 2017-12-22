@@ -14,9 +14,7 @@ import org.apache.shiro.web.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,64 +25,16 @@ import javax.servlet.http.HttpServletRequest;
  * @author liushuai
  */
 @Controller
+@RequestMapping("/account")
 public class AccountController {
 
     @Autowired
     private AccountService accountService;
 
-    @GetMapping("/")
-    public String login() {
-
-        Subject subject = SecurityUtils.getSubject();
-        if (subject.isAuthenticated()) {
-            subject.logout();
-        }
-        if (!subject.isAuthenticated() && subject.isRemembered()) {
-            return "redirect:/home";
-        }
-        return "login";
-    }
-
-    @PostMapping("/")
-    public String login(String accountMobile, String accountPassword, boolean rememberMe,
-                        RedirectAttributes redirectAttributes, HttpServletRequest request) {
-        try {
-            Subject subject = SecurityUtils.getSubject();
-            UsernamePasswordToken usernamePasswordToken =
-                    new UsernamePasswordToken(accountMobile,new Md5Hash(accountPassword).toString(), rememberMe);
-            subject.login(usernamePasswordToken);
-
-            String url = "/home";
-            SavedRequest savedRequest = WebUtils.getSavedRequest(request);
-            if (savedRequest != null) {
-                url = savedRequest.getRequestUrl();
-            }
-            //登陆成功前记录日志
-            String ip = request.getRemoteAddr();
-            accountService.saveLoginLog((Account) subject.getPrincipal(), ip);
-
-            return "redirect:" + url;
-        }catch (AuthenticationException ex) {
-            ex.printStackTrace();
-            redirectAttributes.addFlashAttribute("message","账号或密码错误");
-            return "redirect:/";
-        }
-    }
-    @GetMapping("/home")
-    public String home() {
-        return "home";
-    }
-    @GetMapping("/exit")
-    public String exit(RedirectAttributes redirectAttributes) {
-        SecurityUtils.getSubject().logout();
-        redirectAttributes.addFlashAttribute("message","已安全退出");
-        return "redirect:/";
-    }
-
     @GetMapping("/new")
-    public String newAccount() {
-
-        return "new";
+    public String newAccount(Model model) {
+        model.addAttribute("roleList",accountService.findAllRole());
+        return "account/new";
     }
     @PostMapping("/new")
     public String newAccount(Account account, Integer[] roleId,RedirectAttributes redirectAttributes) {
@@ -96,10 +46,10 @@ public class AccountController {
         }catch (ServiceException ex) {
             redirectAttributes.addFlashAttribute("message",ex.getMessage());
         }
-        return "redirect:/list";
+        return "redirect:/account/list";
     }
 
-    @GetMapping("/delete/{id:\\+}")
+    @GetMapping("/delete/{id:\\d+}")
     public String deleteAccount(@PathVariable(name = "id") Integer accountId,RedirectAttributes redirectAttributes) {
         try {
             accountService.deleteAccount(accountId);
@@ -107,7 +57,7 @@ public class AccountController {
         }catch (ServiceException ex) {
             redirectAttributes.addFlashAttribute("message",ex.getMessage());
         }
-        return "redirect:/list";
+        return "redirect:/account/list";
     }
     @GetMapping("/update/{id:\\d+}")
     public String updateAccount(@PathVariable Integer id, Model model) {
@@ -115,24 +65,24 @@ public class AccountController {
         //根据id查询account
         model.addAttribute("account",accountService.findAccountById(id));
         //查询账户对应的 权限
-        model.addAttribute("RoleList",accountService.findRoleByAccountId(id));
-        return "detail";
+        model.addAttribute("role",accountService.findRoleByAccountId(id));
+        model.addAttribute("roleList",accountService.findAllRole());
+        return "account/edit";
     }
 
     @PostMapping("/update/{id:\\d+}")
-    public String updateAccount(Account account,Integer[] roleIdList) {
-
-        accountService.updateAccount(account,roleIdList);
-        return "redirect:/list";
+    public String updateAccount(Account account,Integer[] roleId) {
+        accountService.updateAccount(account,roleId);
+        return "redirect:/account/list";
     }
 
     @GetMapping("/list")
-    public String AccountList(@PathVariable(required = false,name = "p",value = "1") Integer pageNo,
+    public String accountList(@RequestParam(required = false,defaultValue ="1",name = "p") Integer pageNo,
                               Model model) {
 
         PageInfo<Account> accountPageInfo = accountService.findAccountListByPage(pageNo);
         model.addAttribute("accountPageInfo",accountPageInfo);
-        return "list";
+        return "account/list";
     }
 
 }

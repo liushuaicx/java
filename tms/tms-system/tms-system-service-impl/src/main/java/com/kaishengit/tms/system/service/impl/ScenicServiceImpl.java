@@ -28,6 +28,7 @@ public class ScenicServiceImpl implements ScenicService {
     @Autowired
     private ScenicMapper scenicMapper;
 
+    @Autowired
     private ScenicAccountMapper scenicAccountMapper;
 
     @Override
@@ -53,6 +54,10 @@ public class ScenicServiceImpl implements ScenicService {
         scenicAccount.setScenicPassword(password);
         scenicAccount.setScenicState("正常营业");
         scenicAccountMapper.insert(scenicAccount);
+        //景区添加scenicId
+        scenic.setScenicAccountId(scenicAccount.getId());
+        scenicMapper.updateByPrimaryKey(scenic);
+
         logger.info("添加新景区{},景区id为",scenic.getScenicName(),scenicAccount.getId());
         return scenicAccount;
     }
@@ -66,8 +71,8 @@ public class ScenicServiceImpl implements ScenicService {
 
     @Override
     public void edit(Scenic scenic) {
-
-        scenicMapper.updateByPrimaryKey(scenic);
+        scenic.setUpdateTime(new Date());
+        scenicMapper.updateByPrimaryKeyWithBLOBs(scenic);
         logger.info("修改景区{}状态",scenic.getScenicName());
     }
 

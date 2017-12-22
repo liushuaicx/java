@@ -61,15 +61,15 @@ public class ScenicController {
         }catch (IOException ex) {
             throw new RuntimeException("文件上传异常",ex);
         }
-        return "redirect:/scenic";
+        return "redirect:/scenic/";
     }
-    @GetMapping("/edit/{id:\\+}")
-    public String edit(@PathVariable(name = "id") Integer scenicId,Model model) {
+    @GetMapping("/edit")
+    public String edit(@RequestParam(name = "id") Integer scenicId,Model model) {
         model.addAttribute("scenic",scenicService.findById(scenicId));
         return "/scenic/edit";
     }
 
-    @PostMapping("/edit/{id:\\+}")
+    @PostMapping("/edit")
     public String edit(Scenic scenic, MultipartFile file) throws IOException {
         if (file.isEmpty()) {
             scenicService.edit(scenic);
@@ -89,6 +89,13 @@ public class ScenicController {
             scenicService.edit(scenic);
         }
 
-        return "/scenic/list";
+        return "redirect:/scenic/";
     }
+
+    @GetMapping("/detail")
+    public String detail(@RequestParam(name = "id") Integer scenicId,Model model) {
+        model.addAttribute("scenic",scenicService.findById(scenicId));
+        return "scenic/detail";
+    }
+
 }

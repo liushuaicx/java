@@ -6,7 +6,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface StoreAccountMapper {
-
     long countByExample(StoreAccountExample example);
 
     int deleteByExample(StoreAccountExample example);

@@ -60,7 +60,7 @@
                 /static/** = anon
                 /logout = anon
                 /favicon.ico = anon
-                /list = roles[超级管理员]
+                /account/list = roles[超级管理员]
                 /** = user
             </value>
         </property>

@@ -19,7 +19,7 @@ import java.io.InputStream;
  * @author liushuai
  */
 @Controller
-@RequestMapping("/ticket/store")
+@RequestMapping("/ticket")
 public class TicketStoreController {
 
     @Autowired
@@ -31,12 +31,12 @@ public class TicketStoreController {
 
         PageInfo<TicketStore> ticketStorePageInfo = ticketStoreService.findAllByPageNo(pageNo);
         model.addAttribute("ticketStorePageInfo",ticketStorePageInfo);
-        return "ticket/store/list";
+        return "ticket/list";
     }
 
     @GetMapping("/newTicketStore")
     public String newTicketStore() {
-        return "ticket/store/new";
+        return "ticket/new";
     }
 
     /**
@@ -82,17 +82,17 @@ public class TicketStoreController {
             redirectAttributes.addFlashAttribute("message","文件上传失败");
             return "redirect:/newTicketStore";
         }
-        return "redirect:/ticket/store/";
+        return "redirect:/ticket/";
     }
 
-    @GetMapping("/edit/{id:\\+}")
-    public String editTicketStore(@PathVariable(name = "id") Integer ticketStoreId,Model model) {
+    @GetMapping("/edit/{id:\\d+}")
+    public String editTicketStore(@PathVariable(name = "id",required = false) Integer ticketStoreId,Model model) {
 
-        model.addAttribute("",ticketStoreService.findByTicketStoreId(ticketStoreId));
-        return "ticket/store/edit";
+        model.addAttribute("ticketStore",ticketStoreService.findByTicketStoreId(ticketStoreId));
+        return "ticket/edit";
     }
 
-    @GetMapping("/edit/{id:\\+}")
+    @PostMapping("/edit/{id:\\d+}")
     public String editTicketStore(TicketStore ticketStore, MultipartFile file,
                                   MultipartFile file2,
                                   MultipartFile file3,RedirectAttributes redirectAttributes) throws IOException {
@@ -125,7 +125,7 @@ public class TicketStoreController {
             redirectAttributes.addFlashAttribute("message", "文件上传失败");
             return "redirect:/newTicketStore";
         }
-        return "redirect:/ticket/store/";
+        return "redirect:/ticket/";
     }
 
 }

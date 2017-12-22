@@ -101,7 +101,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.kaishengit.tms.entity.ScenicAccount">
+  <insert id="insert" parameterType="com.kaishengit.tms.entity.ScenicAccount" useGeneratedKeys="true" keyProperty="id">
     insert into scenic_account (id, scenic_account, scenic_password, 
       create_time, update_time, scenic_state, 
       scenic_id)

@@ -101,7 +101,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.kaishengit.tms.entity.StoreAccount">
+  <insert id="insert" parameterType="com.kaishengit.tms.entity.StoreAccount" useGeneratedKeys="true" keyProperty="id">
     insert into store_account (id, store_account, store_password, 
       create_time, update_time, store_state, 
       ticket_store_id)

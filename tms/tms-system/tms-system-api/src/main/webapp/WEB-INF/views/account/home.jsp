@@ -8,19 +8,19 @@
     <title>TMS - 管理系统</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <%@include file="include/css.jsp"%>
+    <%@include file="../include/css.jsp"%>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <!-- Site wrapper -->
 <div class="wrapper">
 
     <!-- 顶部导航栏部分 -->
-    <%@include file="include/header.jsp"%>
+    <%@include file="../include/header.jsp"%>
 
     <!-- =============================================== -->
 
     <!-- 左侧菜单栏 -->
-    <jsp:include page="include/sider.jsp">
+    <jsp:include page="../include/sider.jsp">
         <jsp:param name="menu" value="home"/>
     </jsp:include>
 
@@ -75,11 +75,11 @@
     <!-- /.content-wrapper -->
 
     <!-- 底部 -->
-    <%@include file="include/footer.jsp"%>
+    <%@include file="../include/footer.jsp"%>
 
 </div>
 <!-- ./wrapper -->
 
-<%@include file="include/js.jsp"%>
+<%@include file="../include/js.jsp"%>
 </body>
 </html>
