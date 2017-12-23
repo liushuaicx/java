@@ -212,7 +212,10 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+    <select id="getCustomerByIdCard" resultType="com.kaishengit.tms.entity.Customer">
+      SELECT * FROM customer WHERE customer_id_card = #{customerIdCard}
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
     update customer
     <set>
       <if test="record.id != null">

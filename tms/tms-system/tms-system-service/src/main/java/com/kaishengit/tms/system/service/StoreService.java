@@ -2,6 +2,7 @@ package com.kaishengit.tms.system.service;
 
 import com.kaishengit.tms.entity.Customer;
 import com.kaishengit.tms.entity.StoreAccount;
+import com.kaishengit.tms.entity.Ticket;
 import com.kaishengit.tms.exception.ServiceException;
 
 import java.util.Date;
@@ -64,5 +65,12 @@ public interface StoreService {
      * @param newTicketNum
      * @throws ServiceException
      */
-    void replace(String idCardNum, Integer storeAccountId, Integer newTicketNum) throws ServiceException;
+    void replace(String idCardNum, Integer newTicketNum,Integer storeAccountId) throws ServiceException;
+
+    /**
+     * 查询年票状态
+     * @param ticketNum
+     * @return
+     */
+    Ticket findByTicketNum(Integer ticketNum);
 }

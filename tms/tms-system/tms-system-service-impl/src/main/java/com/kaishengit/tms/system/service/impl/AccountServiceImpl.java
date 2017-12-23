@@ -5,10 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.kaishengit.tms.entity.*;
 import com.kaishengit.tms.exception.ServiceException;
-import com.kaishengit.tms.mapper.AccountLoginLogMapper;
-import com.kaishengit.tms.mapper.AccountMapper;
-import com.kaishengit.tms.mapper.AccountRoleMapper;
-import com.kaishengit.tms.mapper.RoleMapper;
+import com.kaishengit.tms.mapper.*;
 import com.kaishengit.tms.system.service.AccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +33,8 @@ public class AccountServiceImpl implements AccountService {
     private AccountRoleMapper accountRoleMapper;
     @Autowired
     private RoleMapper roleMapper;
+    @Autowired
+    private StoreAccountMapper storeAccountMapper;
 
 
 
@@ -158,6 +157,20 @@ public class AccountServiceImpl implements AccountService {
         RoleExample roleExample = new RoleExample();
         List<Role> roleList = roleMapper.selectByExample(roleExample);
         return roleList;
+    }
+
+    /**
+     * 售票点登陆查询
+     * @param userName
+     * @return
+     */
+    @Override
+    public StoreAccount findStoreAccountByMobile(String userName) {
+
+        StoreAccountExample storeAccountExample = new StoreAccountExample();
+        storeAccountExample.createCriteria().andStoreAccountEqualTo(userName);
+        List<StoreAccount> storeAccounts = storeAccountMapper.selectByExample(storeAccountExample);
+        return storeAccounts.get(0);
     }
 
 

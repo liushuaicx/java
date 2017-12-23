@@ -2,12 +2,14 @@ package com.kaishengit.tms.store.api;
 
 import com.kaishengit.tms.entity.Customer;
 import com.kaishengit.tms.entity.StoreAccount;
+import com.kaishengit.tms.entity.Ticket;
 import com.kaishengit.tms.exception.ServiceException;
 import com.kaishengit.tms.store.auth.ShiroUtil;
 import com.kaishengit.tms.store.files.QiNiuFileStore;
 import com.kaishengit.tms.system.service.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +29,17 @@ public class StoreController {
 
     @Autowired
     private StoreService storeService;
+    @GetMapping("/")
+    public String home() {
+        return "store/home";
+    }
+
+    @PostMapping("/detail")
+    public String detail(Integer ticketNum, Model model) {
+        Ticket ticket = storeService.findByTicketNum(ticketNum);
+        model.addAttribute("ticket",ticket);
+        return "store/home";
+    }
 
     @GetMapping("/handle")
     public String handle() {
@@ -72,7 +85,7 @@ public class StoreController {
         try {
             storeService.addCustomer(customer, ticketNum, storeAccount.getId(), ticketOrderType);
             redirectAttributes.addFlashAttribute("message", "添加成功");
-            return "redirect:/store/handle";
+            return "redirect:/store/";
         } catch (ServiceException ex) {
             redirectAttributes.addFlashAttribute("message", ex.getMessage());
             return "redirect:/store/handle";
@@ -88,8 +101,8 @@ public class StoreController {
     public String payment(Integer ticketNum, Integer money, RedirectAttributes redirectAttributes) {
 
         Date date = storeService.payment(ticketNum, money);
-        redirectAttributes.addFlashAttribute("续费成功", "到期时间为: " + date);
-        return "redirect:/store/handle";
+        redirectAttributes.addFlashAttribute("message", "到期时间为: " + date);
+        return "redirect:/store/";
     }
 
     @GetMapping("/guashi")
@@ -103,7 +116,7 @@ public class StoreController {
         try {
             storeService.reportLoss(ticketNum, idCardNum);
             redirectAttributes.addFlashAttribute("message", "挂失成功");
-            return "redirect:/store/handle";
+            return "redirect:/store/";
         } catch (ServiceException ex) {
             ex.printStackTrace();
             redirectAttributes.addFlashAttribute("message", ex.getMessage());
@@ -122,7 +135,7 @@ public class StoreController {
         try {
             storeService.restore(ticketNum, idCardNum);
             redirectAttributes.addFlashAttribute("message", "解挂成功");
-            return "redirect:/store/handle";
+            return "redirect:/store/";
         } catch (ServiceException ex) {
             ex.printStackTrace();
             redirectAttributes.addFlashAttribute("message", ex.getMessage());
@@ -143,7 +156,7 @@ public class StoreController {
         try {
             storeService.replace(idCardNum, newTicketNum, storeAccount.getId());
             redirectAttributes.addFlashAttribute("message", "补卡成功");
-            return "redirect:/store/handle";
+            return "redirect:/store/";
         } catch (ServiceException ex) {
             ex.printStackTrace();
             redirectAttributes.addFlashAttribute("message", ex.getMessage());

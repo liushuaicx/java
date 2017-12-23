@@ -3,6 +3,7 @@ package com.kaishengit.tms.system.service;
 import com.github.pagehelper.PageInfo;
 import com.kaishengit.tms.entity.Account;
 import com.kaishengit.tms.entity.Role;
+import com.kaishengit.tms.entity.StoreAccount;
 import com.kaishengit.tms.exception.ServiceException;
 
 import java.util.List;
@@ -35,4 +36,10 @@ public interface AccountService {
      */
     List<Role> findAllRole();
 
+    /**
+     *售票点登陆查询
+     * @param userName
+     * @return
+     */
+    StoreAccount findStoreAccountByMobile(String userName);
 }

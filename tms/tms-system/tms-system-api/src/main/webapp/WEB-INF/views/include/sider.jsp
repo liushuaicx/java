@@ -13,7 +13,6 @@
 
             <li class="${param.menu == 'home' ? 'active' : ''}"><a href="/home"><i class="fa fa-home"></i> <span>首页</span></a></li>
 
-            <!-- 客户管理 -->
             <li class="treeview ${fn:startsWith(param.menu, 'base_') ? 'active' : ''}">
                 <a href="/scenic/">
                     <i class="fa fa-address-book-o"></i> <span>基本信息管理</span>
@@ -35,16 +34,16 @@
             </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="${param.menu == 'sale_my'? 'active' : ''}"><a href="/sale/my"><i class="fa fa-circle-o"></i> 电子公告</a></li>
-                    <li class="${param.menu == 'sale_my'? 'active' : ''}"><a href="/sale/my"><i class="fa fa-circle-o"></i> 消息中心</a></li>
-                    <li class="${param.menu == 'sale_my'? 'active' : ''}"><a href="/sale/my"><i class="fa fa-circle-o"></i> 规章制度</a></li>
+                    <li class="${param.menu == 'sale_my'? 'active' : ''}"><a href="/"><i class="fa fa-circle-o"></i> 电子公告</a></li>
+                    <li class="${param.menu == 'sale_my'? 'active' : ''}"><a href="/"><i class="fa fa-circle-o"></i> 消息中心</a></li>
+                    <li class="${param.menu == 'sale_my'? 'active' : ''}"><a href="/"><i class="fa fa-circle-o"></i> 规章制度</a></li>
                 </ul>
             </li>
             <!-- 待办事项 -->
-            <li class="${param.menu == 'task' ? 'active' : ''}"><a href="/task/list"><i class="fa fa-calendar"></i> <span>待办事项</span></a></li>
+            <li class="${param.menu == 'task' ? 'active' : ''}"><a href="/"><i class="fa fa-calendar"></i> <span>待办事项</span></a></li>
             <!-- 统计报表 -->
 
-            <li class="${param.menu == 'charts_list'? 'active' : ''}"><a href="/charts"><i class="fa fa-pie-chart"></i><span> 统计报表</span></a></li>
+            <li class="${param.menu == 'charts_list'? 'active' : ''}"><a href="/"><i class="fa fa-pie-chart"></i><span> 统计报表</span></a></li>
 
 
             <shiro:hasRole name="超级管理员">

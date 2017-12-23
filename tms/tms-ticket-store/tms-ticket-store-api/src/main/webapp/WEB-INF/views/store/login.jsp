@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>TMS - 管理系统</title>
+    <title>TMS - 售票管理系统</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.6 -->
@@ -28,7 +28,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
-        <a href="/"><b>TMS - 管理系统</b></a>
+        <a href="/"><b>TMS - 售票管理系统</b></a>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
@@ -38,11 +38,11 @@
 
         <form method="post">
             <div class="form-group has-feedback">
-                <input type="text" class="form-control" value="155" name="accountMobile" placeholder="账号">
+                <input type="text" class="form-control" value="测试" name="storeAccount" placeholder="账号">
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">
-                <input type="password" class="form-control" value="123" name="accountPassword" placeholder="密码">
+                <input type="password" class="form-control" value="123" name="storePassword" placeholder="密码">
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
             <div class="row">

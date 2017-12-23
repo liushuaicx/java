@@ -29,6 +29,7 @@ public class StoreServiceImpl implements StoreService {
     private static final String JIHUO = "激活";
     private static final String DONGJIE = "冻结";
     private static final String ZUOFEI = "作废";
+    private static final String GUASHI = "挂失";
 
     private static Logger logger = LoggerFactory.getLogger(StoreServiceImpl.class);
 
@@ -62,6 +63,10 @@ public class StoreServiceImpl implements StoreService {
     @Transactional(rollbackFor = RuntimeException.class)
     public void addCustomer(Customer customer, Integer ticketNum, Integer id, String ticketOrderType) {
 
+        Customer customer1 = customerMapper.getCustomerByIdCard(customer.getCustomerIdCard());
+        if (customer1 != null) {
+            throw new ServiceException("您已办理过年票,每人只能持有一张年票");
+        }
         Ticket ticket = getTicket(ticketNum);
         String state = ticket.getTicketState();
         if (state == ZUOFEI) {
@@ -69,6 +74,13 @@ public class StoreServiceImpl implements StoreService {
         }
         Date date = new Date();
         //添加客户信息
+        String str = customer.getCustomerIdCard().substring(6,10);
+
+        Calendar calendar1 = Calendar.getInstance();
+        Integer now = calendar1.get(Calendar.YEAR);
+        Integer in = Integer.parseInt(str);
+
+        customer.setCustomerAge(now - in);
         customer.setCreateTime(date);
         customer.setTicketId(ticket.getId());
         customerMapper.insert(customer);
@@ -117,10 +129,7 @@ public class StoreServiceImpl implements StoreService {
     public Date payment(Integer ticketNum, Integer money) {
 
         Ticket ticket = getTicket(ticketNum);
-        if (ticket.getTicketState() != JIHUO || ticket.getTicketState() != DONGJIE ) {
-            throw new ServiceException("本卡号不存在,或已注销,请重新填写");
-        }else if (ticket.getTicketState() == JIHUO) {
-
+        if (ticket.getTicketState().equals(JIHUO)) {
             Date date = ticket.getTicketValidatyEnd();
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(date);
@@ -128,7 +137,7 @@ public class StoreServiceImpl implements StoreService {
             Date endTime;
             //根据ticket对象的customerId获得订单信息
             String ticketOrderType = getTicketOrder(ticket).getTicketOrderType();
-            if (ticketOrderType == BANPIAO) {
+            if (ticketOrderType.equals(BANPIAO)) {
                 calendar.add(Calendar.YEAR,num * 2);
                 endTime = calendar.getTime();
                 ticket.setTicketValidatyEnd(endTime);
@@ -137,7 +146,8 @@ public class StoreServiceImpl implements StoreService {
                 endTime = calendar.getTime();
                 ticket.setTicketValidatyEnd(endTime);
             }
-        }else if (ticket.getTicketState() == DONGJIE) {
+            ticketMapper.updateByPrimaryKey(ticket);
+        }else if (ticket.getTicketState().equals(DONGJIE)) {
             //续费 并修改为激活状态
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(new Date());
@@ -145,7 +155,7 @@ public class StoreServiceImpl implements StoreService {
             Date endTime;
             //根据ticket对象的customerId获得订单信息
             String ticketOrderType = getTicketOrder(ticket).getTicketOrderType();
-            if (ticketOrderType == BANPIAO) {
+            if (ticketOrderType.equals(BANPIAO)) {
                 calendar.add(Calendar.YEAR,num*2);
                 endTime = calendar.getTime();
                 ticket.setTicketValidatyEnd(endTime);
@@ -156,8 +166,11 @@ public class StoreServiceImpl implements StoreService {
                 ticket.setTicketValidatyEnd(endTime);
                 ticket.setTicketState("激活");
             }
+            ticketMapper.updateByPrimaryKey(ticket);
+        }else {
+            throw new ServiceException("该卡不存在或者已注销");
         }
-        ticketMapper.updateByPrimaryKey(ticket);
+
 
         //添加订单信息
         TicketOrder ticketOrder = new TicketOrder();
@@ -215,7 +228,7 @@ public class StoreServiceImpl implements StoreService {
         if (!customer.getId().equals(ticket.getCustomerId())) {
             throw new ServiceException("身份证和卡不匹配");
         }
-        if (ticket.getTicketState() == "挂失") {
+        if (ticket.getTicketState().equals("挂失")) {
             ticket.setTicketState("激活");
             ticket.setUpdateTime(new Date());
             ticketMapper.updateByPrimaryKey(ticket);
@@ -233,14 +246,14 @@ public class StoreServiceImpl implements StoreService {
      */
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
-    public void replace(String idCardNum, Integer storeAccountId, Integer newTicketNum) throws ServiceException {
+    public void replace(String idCardNum, Integer newTicketNum, Integer storeAccountId) throws ServiceException {
 
         Customer customer = getCustomer(idCardNum);
         Ticket ticket = ticketMapper.selectByPrimaryKey(customer.getTicketId());
         if (ticket == null) {
             throw new ServiceException("该身份证下不存在年票");
         }
-        if (ticket.getTicketState() != "挂失") {
+        if (!ticket.getTicketState().equals(GUASHI)) {
             throw new ServiceException("请先挂失后再补办");
         }
         //补办一张新卡
@@ -251,7 +264,7 @@ public class StoreServiceImpl implements StoreService {
         ticket1.setTicketValidatyEnd(ticket.getTicketValidatyEnd());
         ticket1.setCustomerId(ticket.getId().longValue());
         ticket1.setStoreAccountId(storeAccountId);
-        ticketMapper.insert(ticket1);
+        ticketMapper.updateByPrimaryKey(ticket1);
 
         //旧卡作废
         ticket.setTicketState("作废");
@@ -272,6 +285,16 @@ public class StoreServiceImpl implements StoreService {
         logger.info("补办新卡,卡号为{},作废卡号为{},并创建补卡订单",newTicketNum,ticket.getTicketNum());
     }
 
+    /**
+     * 查询年票状态
+     * @param ticketNum
+     * @return
+     */
+    @Override
+    public Ticket findByTicketNum(Integer ticketNum) {
+        return getTicket(ticketNum);
+    }
+
 
     /**
      * 获得Ticket对象
@@ -281,7 +304,11 @@ public class StoreServiceImpl implements StoreService {
     private Ticket getTicket(Integer ticketNum) {
         TicketExample ticketExample = new TicketExample();
         ticketExample.createCriteria().andTicketNumEqualTo(ticketNum);
-        return ticketMapper.selectByExample(ticketExample).get(0);
+        List<Ticket> ticketList = ticketMapper.selectByExample(ticketExample);
+        if (ticketList.size() != 0) {
+            return ticketList.get(0);
+        }
+        return null;
     }
 
     /**
@@ -321,6 +348,7 @@ public class StoreServiceImpl implements StoreService {
             DateTime dateTime = new DateTime(date.getTime());
             if (dateTime.isBeforeNow()) {
                 ticket.setTicketState("冻结");
+                ticketMapper.updateByPrimaryKey(ticket);
             }
         }
 

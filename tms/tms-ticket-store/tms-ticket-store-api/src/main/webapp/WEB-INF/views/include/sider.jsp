@@ -13,45 +13,16 @@
 
             <li class="${param.menu == 'home' ? 'active' : ''}"><a href="/home"><i class="fa fa-home"></i> <span>首页</span></a></li>
 
-            <!-- 客户管理 -->
-            <li class="treeview ${fn:startsWith(param.menu, 'customer_') ? 'active' : ''}">
-                <a href="/customer/my">
-                    <i class="fa fa-address-book-o"></i> <span>基本信息管理</span>
-                    <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li class="${param.menu == 'customer_my'? 'active' : ''}"><a href="/customer/my"><i class="fa fa-circle-o"></i> 景区信息</a></li>
-                    <li class="${param.menu == 'customer_public'? 'active' : ''}"><a href="/customer/public"><i class="fa fa-circle-o"></i> 售票点信息</a></li>
-                </ul>
-            </li>
-            <!-- 工作记录 -->
-            <li class="treeview ${fn:startsWith(param.menu, 'sale_') ? 'active' : ''}">
-                <a href="#">
-                    <i class="fa fa-bars"></i> <span>综合办公</span>
-                    <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li class="${param.menu == 'sale_my'? 'active' : ''}"><a href="/sale/my"><i class="fa fa-circle-o"></i> 电子公告</a></li>
-                    <li class="${param.menu == 'sale_my'? 'active' : ''}"><a href="/sale/my"><i class="fa fa-circle-o"></i> 消息中心</a></li>
-                    <li class="${param.menu == 'sale_my'? 'active' : ''}"><a href="/sale/my"><i class="fa fa-circle-o"></i> 规章制度</a></li>
-                </ul>
-            </li>
-            <!-- 待办事项 -->
-            <li class="${param.menu == 'task' ? 'active' : ''}"><a href="/task/list"><i class="fa fa-calendar"></i> <span>待办事项</span></a></li>
-            <!-- 统计报表 -->
+            <li class="${param.menu == 'handle' ? 'active' : ''}"><a href="/store/handle"><i class="fa fa-shopping-basket"></i> <span>年票办理</span></a></li>
 
-            <li class="${param.menu == 'charts_list'? 'active' : ''}"><a href="/charts"><i class="fa fa-pie-chart"></i> 统计报表</a></li>
+            <li class="${param.menu == 'payment' ? 'active' : ''}"><a href="/store/payment"><i class="fa fa-usd"></i> <span>年票续费</span></a></li>
 
+            <li class="${param.menu == 'guashi' ? 'active' : ''}"><a href="/store/guashi"><i class="fa fa-yelp"></i> <span>年票挂失</span></a></li>
 
-            <shiro:hasRole name="超级管理员">
-            <li class="header">系统管理</li>
-            <!-- 部门员工管理 -->
-            <li class="${param.menu == 'list' ? 'active' : ''}"><a href="/list"><i class="fa fa-users"></i> <span>用户管理</span></a></li>
-            </shiro:hasRole>
+            <li class="${param.menu == 'restore' ? 'active' : ''}"><a href="/store/restore"><i class="fa fa-smile-o"></i> <span>年票解挂</span></a></li>
+
+            <li class="${param.menu == 'replace' ? 'active' : ''}"><a href="/store/replace"><i class="fa fa-umbrella"></i> <span>年票补办</span></a></li>
+
 
         </ul>
     </section>

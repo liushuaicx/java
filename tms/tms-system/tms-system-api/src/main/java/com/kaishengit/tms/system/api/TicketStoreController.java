@@ -77,7 +77,7 @@ public class TicketStoreController {
             String newFileName4 = newFileName2 +","+newFileName3;
             ticketStore.setStoreManageAttachment(newFileName4);
             StoreAccount storeAccount = ticketStoreService.newTicketStore(ticketStore);
-            redirectAttributes.addFlashAttribute("售票点保存成功 , 账号为<"+storeAccount.getStoreAccount()+"> , 默认密码为 <123>");
+            redirectAttributes.addFlashAttribute("message","售票点保存成功 , 账号为<"+storeAccount.getStoreAccount()+"> , 默认密码为 <123>");
         }catch (IOException ex) {
             redirectAttributes.addFlashAttribute("message","文件上传失败");
             return "redirect:/newTicketStore";

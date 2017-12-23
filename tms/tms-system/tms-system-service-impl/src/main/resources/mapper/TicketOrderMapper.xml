@@ -106,7 +106,7 @@
   </delete>
   <insert id="insert" parameterType="com.kaishengit.tms.entity.TicketOrder">
     insert into ticket_order (id, ticket_order_num, ticket_order_price, 
-      create_time, update_time, " ticket_id", 
+      create_time, update_time, ticket_id,
       customer_id, store_account_id, ticket_order_type
       )
     values (#{id,jdbcType=BIGINT}, #{ticketOrderNum,jdbcType=VARCHAR}, #{ticketOrderPrice,jdbcType=DECIMAL}, 

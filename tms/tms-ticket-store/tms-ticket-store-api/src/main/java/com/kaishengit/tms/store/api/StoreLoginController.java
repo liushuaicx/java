@@ -24,7 +24,6 @@ import javax.servlet.http.HttpServletRequest;
  * @author liushuai
  */
 @Controller
-@RequestMapping("/store")
 public class StoreLoginController {
 
     @Autowired
@@ -38,13 +37,13 @@ public class StoreLoginController {
             subject.logout();
         }
         if (subject.isAuthenticated() & subject.isRemembered()) {
-            return "/store/home";
+            return "store/home";
         }
         return "store/login";
     }
 
     @PostMapping("/")
-    public String login(String storeAccount, String storePassword, Boolean rememberMe,
+    public String login(String storeAccount, String storePassword, boolean rememberMe,
                         HttpServletRequest request, RedirectAttributes redirectAttributes) {
 
         try {
@@ -53,7 +52,7 @@ public class StoreLoginController {
                     new Md5Hash(storePassword).toString(), rememberMe);
 
             subject.login(usernamePasswordToken);
-            String url = "/store/home";
+            String url = "/home";
             SavedRequest savedRequest = WebUtils.getSavedRequest(request);
             if (savedRequest != null) {
                 url = savedRequest.getRequestUrl();
@@ -64,7 +63,7 @@ public class StoreLoginController {
         } catch (AuthenticationException ex) {
             ex.printStackTrace();
             redirectAttributes.addFlashAttribute("message", "账号或密码错误");
-            return "redirect:/store/";
+            return "redirect:/";
         }
 
     }
@@ -73,7 +72,7 @@ public class StoreLoginController {
     public String exit(RedirectAttributes redirectAttributes) {
         SecurityUtils.getSubject().logout();
         redirectAttributes.addFlashAttribute("message","您已安全退出");
-        return "redirect:/store/login";
+        return "redirect:/login";
     }
 
     @GetMapping("/home")

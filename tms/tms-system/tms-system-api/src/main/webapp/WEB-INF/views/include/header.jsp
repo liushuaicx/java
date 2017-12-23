@@ -43,7 +43,7 @@
                                 <a href="/profile" class="btn btn-default btn-flat">个人设置</a>
                             </div>
                             <div class="pull-right">
-                                <a href="/account/exit" class="btn btn-default btn-flat">安全退出</a>
+                                <a href="/exit" class="btn btn-default btn-flat">安全退出</a>
                             </div>
                         </li>
                     </ul>

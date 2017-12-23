@@ -67,5 +67,4 @@
     </bean>
     <!--生命周期-->
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
-
 </beans>
