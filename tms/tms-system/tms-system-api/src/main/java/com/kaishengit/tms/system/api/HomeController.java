@@ -48,7 +48,7 @@ public class HomeController {
                     new UsernamePasswordToken(accountMobile,new Md5Hash(accountPassword).toString(), rememberMe);
             subject.login(usernamePasswordToken);
 
-            String url = "/account/home";
+            String url = "/home";
             SavedRequest savedRequest = WebUtils.getSavedRequest(request);
             if (savedRequest != null) {
                 url = savedRequest.getRequestUrl();

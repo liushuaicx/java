@@ -196,20 +196,21 @@ public class StoreServiceImpl implements StoreService {
      * @param idCardNum
      */
     @Override
-    public void reportLoss(Integer ticketNum, String idCardNum) throws ServiceException {
+    public void reportLoss(String idCardNum) throws ServiceException {
 
         Customer customer = getCustomer(idCardNum);
-
-        Ticket ticket = getTicket(ticketNum);
-        if (!ticket.getCustomerId().equals(customer.getId())) {
-            throw new ServiceException("挂失卡和身份证不匹配");
+        if (customer == null) {
+            throw new ServiceException("该身份证下不存在年票");
         }
-
+        Ticket ticket = ticketMapper.selectByPrimaryKey(customer.getTicketId());
+        if (ticket.getTicketState().equals(GUASHI)) {
+            throw new ServiceException("卡号 : " + ticket.getTicketNum() + "已挂失");
+        }
         ticket.setTicketState("挂失");
         ticket.setUpdateTime(new Date());
         ticketMapper.updateByPrimaryKey(ticket);
 
-        logger.info("年票号{}挂失",ticketNum);
+        logger.info("年票号{}挂失",ticket.getTicketNum());
     }
 
 

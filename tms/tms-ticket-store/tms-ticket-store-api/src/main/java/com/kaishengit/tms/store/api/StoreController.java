@@ -111,10 +111,10 @@ public class StoreController {
     }
 
     @PostMapping("/guashi")
-    public String reportLoss(Integer ticketNum, String idCardNum, RedirectAttributes redirectAttributes) {
+    public String reportLoss(String idCardNum, RedirectAttributes redirectAttributes) {
 
         try {
-            storeService.reportLoss(ticketNum, idCardNum);
+            storeService.reportLoss(idCardNum);
             redirectAttributes.addFlashAttribute("message", "挂失成功");
             return "redirect:/store/";
         } catch (ServiceException ex) {

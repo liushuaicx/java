@@ -44,11 +44,10 @@ public interface StoreService {
 
     /**
      * 年票挂失
-     * @param ticketNum
      * @param idCardNum
      * @throws ServiceException
      */
-    void reportLoss(Integer ticketNum, String idCardNum) throws ServiceException;
+    void reportLoss(String idCardNum) throws ServiceException;
 
     /**
      * 年票解挂

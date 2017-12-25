@@ -50,7 +50,7 @@
                     <form method="post" id="addForm" enctype="multipart/form-data">
                         <div class="form-group">
                             <label>卡号</label>
-                            <input type="text" name="ticketNum" class="form-control">
+                            <input type="text" value="${param.get('num')}" name="ticketNum" class="form-control">
                         </div>
                         <div class="form-group">
                             <label>身份证号</label>

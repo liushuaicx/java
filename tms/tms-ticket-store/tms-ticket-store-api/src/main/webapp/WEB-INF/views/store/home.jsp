@@ -62,7 +62,15 @@
                     </c:if>
                 </div>
                 <c:if test="${not empty ticket}">
-                <h4>到期时间为 : <fmt:formatDate value="${ticket.ticketValidatyEnd}"/></h4>
+                <h4>到期时间为 : <fmt:formatDate value="${ticket.ticketValidatyEnd}"/>
+                    <c:if test="${ticket.ticketState == '激活'}">
+                        <a href="/store/payment?num=${ticket.ticketNum}">点击续费</a>
+                    </c:if>
+                    <c:if test="${ticket.ticketState == '挂失'}">
+                        本卡已挂失,
+                        <a href="/store/restore?num=${ticket.ticketNum}">点击解挂</a>
+                    </c:if>
+                </h4>
                 </c:if>
                 <form action="/store/detail" method="post" id="addForm" enctype="multipart/form-data">
                     <div class="form-group">
