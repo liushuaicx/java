@@ -56,13 +56,15 @@
                             <i class="fa fa-minus"></i></button>
                     </div>
                 </div>
-                <div>
-                    <c:if test="${not empty message}">
-                        <p class="danger">${message}</p>
-                    </c:if>
-                </div>
+
+                <c:if test="${not empty message}">
+                    <div class="container">
+                    <h4 class="login-box-msg">${message}</h4>
+                    </div>
+                </c:if>
+
                 <c:if test="${not empty ticket}">
-                <h4>到期时间为 : <fmt:formatDate value="${ticket.ticketValidatyEnd}"/>
+                <h4 class="login-box-msg">到期时间为 : <fmt:formatDate value="${ticket.ticketValidatyEnd}"/>
                     <c:if test="${ticket.ticketState == '激活'}">
                         <a href="/store/payment?num=${ticket.ticketNum}">点击续费</a>
                     </c:if>

@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -101,7 +102,8 @@ public class StoreController {
     public String payment(Integer ticketNum, Integer money, RedirectAttributes redirectAttributes) {
 
         Date date = storeService.payment(ticketNum, money);
-        redirectAttributes.addFlashAttribute("message", "到期时间为: " + date);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        redirectAttributes.addFlashAttribute("message", "到期时间为: " + simpleDateFormat.format(date));
         return "redirect:/store/";
     }
 
